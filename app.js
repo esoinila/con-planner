@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var coolRouter = require('./routes/cool'); 
 
 var app = express();
 
@@ -19,8 +20,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', indexRouter); // http://localhost:3000/
+app.use('/users', usersRouter); // http://localhost:3000/users
+app.use('/cool', coolRouter); // http://localhost:3000/cool
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
