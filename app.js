@@ -4,9 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var coolRouter = require('./routes/cool'); 
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
+const catalogRouter = require("./routes/catalog"); //Import routes for "catalog" area of site
+
 
 var app = express();
 
@@ -37,6 +39,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter); // http://localhost:3000/
 app.use('/users', usersRouter); // http://localhost:3000/users
 app.use('/cool', coolRouter); // http://localhost:3000/cool
+
+app.use("/catalog", catalogRouter); // Add catalog routes to middleware chain.
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
