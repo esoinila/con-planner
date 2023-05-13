@@ -6,7 +6,7 @@ block content
   ul
     each item in genre_list
       li
-        text(item.name) #{item.name}
+        a(href=item.url) #{item.name}
         
 
     else
