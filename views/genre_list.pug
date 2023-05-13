@@ -4,9 +4,10 @@ block content
   h1= title
 
   ul
-    each genre in genre_list
+    each item in genre_list
       li
-        #{genre.name}
+        text(item.name) #{item.name}
+        
 
     else
       li There are no genre.
