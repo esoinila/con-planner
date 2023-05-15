@@ -1,0 +1,4 @@
+env_variables:
+  BUCKET_NAME: "example-gcs-bucket"
+  MONGODB_URI: "mongodb+srv://test123:BNeJqYVuUo8kftXU@cluster36153.4bkgmv1.mongodb.net/myFirstDatabase?retryWrites=true"
+  
