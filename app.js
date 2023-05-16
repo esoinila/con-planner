@@ -44,11 +44,10 @@ app.use(
 const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
-//const dev_db_url = "mongodb+srv://test123:BNeJqYVuUo8kftXU@cluster36153.4bkgmv1.mongodb.net/myFirstDatabase?retryWrites=true";
+const dev_db_url = "mongodb://localhost:27017/local_library";
 
 const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
-//const mongoDB = "mongodb+srv://test123:BNeJqYVuUo8kftXU@cluster36153.4bkgmv1.mongodb.net/myFirstDatabase?retryWrites=true";
 
 main().catch((err) => console.log(err));
 async function main() {
