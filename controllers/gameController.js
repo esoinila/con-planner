@@ -30,6 +30,19 @@ exports.game_list = asyncHandler(async (req, res, next) => {
         .populate("bookings")
         .exec();
 
+    // Let's add the bookings for each game to bookings array
+    
+    const allBookings = await Booking.find({}).populate("game").exec();
+
+    // let's add all the bookings for each game
+    allGames.forEach((game) => {
+      allBookings.forEach((booking) => {
+        if (booking.game._id.toString() === game._id.toString()) {
+          game.bookings.push(booking);
+        }
+      });
+    });
+    
     res.render("game_list", { title: "Game List", game_list: allGames });
 });
 
