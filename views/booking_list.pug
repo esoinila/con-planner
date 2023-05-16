@@ -6,7 +6,10 @@ block content
     ul
         each val in booking_list
             li
-                a(href=val.url) #{val.game.title} 
+                a(href=val.url) #{val.game.title}
+                <p>#{val.playername}</p> 
+                <p>#{val.name}</p> 
+                <p>#{val.date}</p>
 
         else
             li There are no bookings.

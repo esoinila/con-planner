@@ -6,8 +6,10 @@ block content
   ul
     each game in game_list
       li
-        a(href=game.url) #{game.title}
-        |  (#{game.bookings.name})
+        a(href=game.url) <h3> #{game.title}</h3>
+        
+        <p>#{game.description}</p>
+        <p>#{game.min_players}</p>
 
     else
       li There are no games.
