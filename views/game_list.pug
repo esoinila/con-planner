@@ -10,12 +10,14 @@ block content
         
         <p>#{game.description}</p>
         <p>Peli pelataan #{game.min_players} – #{game.max_players} pelaajalla.</p>
-        <p>ilmoittautumisia: ( 0 / #{game.max_players} ) </p>
-        <p>ilmoittautuneet:
-            each player in game.bookings
-                <em> #{player.playername}, </em>
+        <p>ilmoittautumisia: ( #{game.bookings.length} / #{game.max_players} ) </p>
+        <p>ilmoittautuneet: 
+            each player, index in game.bookings
+                <em> #{player.playername}  
+                if index < game.bookings.length - 1
+                    |,                    
+                </em>            
         </p>
-
 
     else
       li There are no games.
