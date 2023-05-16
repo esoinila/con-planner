@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each game in game_list
+      li
+        a(href=game.url) #{game.title}
+        |  (#{game.booking.name})
+
+    else
+      li There are no games.

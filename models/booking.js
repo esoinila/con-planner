@@ -5,7 +5,7 @@ const { DateTime } = require("luxon");
 const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema({
-  book: { type: Schema.Types.ObjectId, ref: "Game", required: true }, // reference to the associated game
+  game: { type: Schema.Types.ObjectId, ref: "Game", required: true }, // reference to the associated game
   playername: { type: String, required: true },
   date: { type: Date, default: Date.now }
 });
