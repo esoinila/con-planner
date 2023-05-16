@@ -8,6 +8,9 @@ var coolRouter = require('./routes/cool');
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog"); //Import routes for "catalog" area of site
+const conRouter = require("./routes/con_routes"); //Import routes for "con" area of site
+
+
 const compression = require("compression");
 const helmet = require("helmet");
 require('dotenv').config();

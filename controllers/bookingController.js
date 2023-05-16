@@ -8,18 +8,47 @@ const Game = require("../models/game");
 // Display list of all Bookings.
 exports.booking_list = asyncHandler(async (req, res, next) => {
     const allBookings = await Booking.find().populate("game").exec();
-  
-    res.render("booking_list", {
-      title: "Booking List",
-      booking_list: allBookings,
-    });
-  });
-  
 
-  exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
+    res.render("booking_list", {
+        title: "Booking List",
+        booking_list: allBookings,
+    });
+});
+
+
+exports.booking_detail = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Booking GET");
-  });
-  
+});
+
+
+// Display Genre update form on GET.
+exports.booking_create_get = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create GET");
+});
+
+exports.booking_create_post = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create POST");
+});
+
+exports.booking_delete_get = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create POST");
+});
+
+exports.booking_delete_post = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create POST");
+});
+
+exports.booking_update_get = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create POST");
+});
+
+exports.booking_update_post = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking create POST");
+});
+
+
+
+
 
 /*
 
