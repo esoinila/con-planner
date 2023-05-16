@@ -9,7 +9,9 @@ block content
         a(href=game.url) <h3> #{game.title}</h3>
         
         <p>#{game.description}</p>
-        <p>#{game.min_players}</p>
+        <p>#{game.min_players} – #{game.max_players} pelaajaa</p>
+        <p>ilmoittautumisia: ( 0 / #{game.max_players} ) </p>
+
 
     else
       li There are no games.
