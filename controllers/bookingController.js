@@ -15,6 +15,12 @@ exports.booking_list = asyncHandler(async (req, res, next) => {
     });
   });
   
+
+  exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Booking GET");
+  });
+  
+
 /*
 
 // Display detail page for a specific BookInstance.
