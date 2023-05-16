@@ -7,7 +7,7 @@ block content
     each game in game_list
       li
         a(href=game.url) #{game.title}
-        |  (#{game.booking.name})
+        |  (#{game.bookings.name})
 
     else
       li There are no games.

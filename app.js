@@ -75,6 +75,7 @@ app.use('/cool', coolRouter); // http://localhost:3000/cool
 
 app.use("/catalog", catalogRouter); // Add catalog routes to middleware chain.
 
+app.use("/con", conRouter); // Add catalog routes to middleware chain.
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
