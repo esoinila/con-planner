@@ -8,8 +8,8 @@ const GameSchema = new Schema({
     min_players: { type: Number, required: true },
     description: { type: String, required: true },
     // let's add start-time and end-time
-    start_time: { type: Date, required: true },
-    end_time: { type: Date, required: true },
+    start_time: { type: Date, default: Date.now },
+    end_time: { type: Date, default: Date.now },
     // let's add a list of players
     bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }]
 });
