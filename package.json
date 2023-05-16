@@ -26,5 +26,9 @@
   "devDependencies": {
     "node-env-run": "^4.0.2",
     "nodemon": "^2.0.22"
+  },  
+  "engines": {
+    "node": ">=16.0.0"
   }
+
 }
