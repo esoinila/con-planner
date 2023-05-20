@@ -22,9 +22,23 @@ exports.booking_detail = asyncHandler(async (req, res, next) => {
 
 
 // Display Genre update form on GET.
+/*
 exports.booking_create_get = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Booking create GET");
+}); */
+
+// Display BookInstance create form on GET.
+exports.booking_create_get = asyncHandler(async (req, res, next) => {
+  const allGames = await Game.find({}, "title").exec();
+
+  res.render("booking_form", {
+    title: "Create Booking",
+    game_list: allGames,
+  });
 });
+
+
+
 
 exports.booking_create_post = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Booking create POST");
