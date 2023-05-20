@@ -61,7 +61,8 @@ exports.bookinstance_create_post = [
       .toDate(),
   
     // Process request after validation and sanitization.
-    asyncHandler(async (req, res, next) => {
+    asyncHandler(async (req, res, next) => 
+    {
       // Extract the validation errors from a request.
       const errors = validationResult(req);
   
