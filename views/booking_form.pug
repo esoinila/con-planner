@@ -5,10 +5,15 @@ block content
 
   form(method='POST' action='')
     div.form-group
+      p Games that are allready booked full:
       ul 
         each game in game_list_full
           li
-            em #{game.title} (#{game.bookings.length} / #{game.max_players} )       
+            em #{game.title} (#{game.bookings.length} / #{game.max_players} )
+        else 
+          li The are no fully booked games yet.
+
+
         
     div.form-group
       label(for='game') Available games with space left:
