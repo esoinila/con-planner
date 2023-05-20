@@ -46,10 +46,33 @@ exports.game_list = asyncHandler(async (req, res, next) => {
     res.render("game_list", { title: "Game List", game_list: allGames });
 });
 
-// Display Genre update form on GET.
 exports.game_detail = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game detail GET");
+  // Get details of game
+  const [game, gameInstances] = await Promise.all([
+    Game.findById(req.params.id).populate("bookings").exec(),
+    Booking.find({ game: req.params.id }).exec(),
+  ]);
+
+  if (game === null) {
+    // No results.
+    const err = new Error("Game not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("game_detail", {
+    title: game.title,
+    game: game,
+    game_instances: gameInstances,
+  });
 });
+
+
+
+// Display Genre update form on GET.
+/*exports.game_detail = asyncHandler(async (req, res, next) => {
+    res.send("NOT IMPLEMENTED: Game detail GET");
+});*/
 
 // Display Genre update form on GET.
 exports.game_create_get = asyncHandler(async (req, res, next) => {
