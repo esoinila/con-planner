@@ -11,7 +11,9 @@ const GameSchema = new Schema({
     start_time: { type: Date, default: Date.now },
     end_time: { type: Date, default: Date.now },
     // let's add a list of players
-    bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }]
+    bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
+    num_bookings: { type: Number, default: 0 },
+    is_full: { type: Boolean, default: false }
 });
 
 // Virtual for book's URL

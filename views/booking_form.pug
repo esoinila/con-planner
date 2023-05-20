@@ -5,26 +5,24 @@ block content
 
   form(method='POST' action='')
     div.form-group
-      label(for='game') Game:
+      ul 
+        each game in game_list_full
+          li
+            em #{game.title} (#{game.bookings.length} / #{game.max_players} )       
+        
+    div.form-group
+      label(for='game') Available games with space left:
       select#game.form-control(type='select' placeholder='Select game' name='game' required='true')
-        - game_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
-        for game in game_list
+        - game_list_space.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+        for game in game_list_space
           option(value=game._id, selected=(selected_game==game._id.toString() ? 'selected' : false) ) #{game.title}
 
-    div.form-group
-      label(for='imprint') Imprint:
-      input#imprint.form-control(type='text' placeholder='Publisher and date information' name='imprint' required='true' value=(undefined===bookinstance ? '' : bookinstance.imprint))
-    div.form-group
-      label(for='due_back') Date when book available:
-      input#due_back.form-control(type='date' name='due_back' value=(undefined===bookinstance ? '' : bookinstance.due_back))
+         
+
 
     div.form-group
-      label(for='status') Status:
-      select#status.form-control(type='select' placeholder='Select status' name='status' required='true')
-        option(value='Maintenance') Maintenance
-        option(value='Available') Available
-        option(value='Loaned') Loaned
-        option(value='Reserved') Reserved
+      label(for='playername') Player name:
+      input#imprint.form-control(type='text' placeholder='name, handle or nickname' name='imprint' required='true' value=(undefined===bookinstance ? '' : bookinstance.imprint))
 
     button.btn.btn-primary(type='submit') Submit
 

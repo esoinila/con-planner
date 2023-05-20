@@ -7,17 +7,17 @@ const Game = require("../models/game");
 
 // Display list of all Bookings.
 exports.booking_list = asyncHandler(async (req, res, next) => {
-    const allBookings = await Booking.find().populate("game").exec();
+  const allBookings = await Booking.find().populate("game").exec();
 
-    res.render("booking_list", {
-        title: "Booking List",
-        booking_list: allBookings,
-    });
+  res.render("booking_list", {
+    title: "Booking List",
+    booking_list: allBookings,
+  });
 });
 
 
 exports.booking_detail = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking GET");
+  res.send("NOT IMPLEMENTED: Booking GET");
 });
 
 
@@ -29,35 +29,58 @@ exports.booking_create_get = asyncHandler(async (req, res, next) => {
 
 // Display BookInstance create form on GET.
 exports.booking_create_get = asyncHandler(async (req, res, next) => {
-  const allGames = await Game.find({}, "title").exec();
+
+  const allGames = await Game.find({})
+    .sort({ title: 1 })
+    .populate("bookings")
+    .exec();
+
+  // Let's add the bookings for each game to bookings array
+
+  const allBookings = await Booking.find({}).populate("game").exec();
+
+  // let's add all the bookings for each game
+  allGames.forEach((game) => {
+    allBookings.forEach((booking) => {
+      if (booking.game._id.toString() === game._id.toString()) {
+        game.bookings.push(booking);
+      }
+    });
+    game.num_bookings = game.bookings.length;
+    game.is_full = game.num_bookings >= game.max_players;
+  });
+  const fullGames = allGames.filter(game => game.is_full === true);
+  const gamesWithSpace = allGames.filter(game => game.is_full === false);
 
   res.render("booking_form", {
     title: "Create Booking",
-    game_list: allGames,
+    game_list_full: fullGames,
+    game_list_space: gamesWithSpace
   });
+
 });
 
 
 
 
 exports.booking_create_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking create POST");
 });
 
 exports.booking_delete_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking create POST");
 });
 
 exports.booking_delete_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking create POST");
 });
 
 exports.booking_update_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking create POST");
 });
 
 exports.booking_update_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking create POST");
 });
 
 
