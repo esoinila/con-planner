@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const { DateTime } = require("luxon");
-
-
 const Schema = mongoose.Schema;
+const { DateTime } = require("luxon");
 
 const BookingSchema = new Schema({
   game: { type: Schema.Types.ObjectId, ref: "Game", required: true }, // reference to the associated game
@@ -17,7 +15,11 @@ BookingSchema.virtual("url").get(function () {
 });
 
 BookingSchema.virtual("date_formatted").get(function () {
-  return DateTime.fromJSDate(this.date.toLocaleString(DateTime.DATE_MED));
+  
+  
+  let string = DateTime.fromJSDate(this.date).toLocaleString(DateTime.DATE_MED);
+  
+  return string;
 });
 
 
