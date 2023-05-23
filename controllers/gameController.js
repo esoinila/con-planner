@@ -111,11 +111,9 @@ exports.game_create_post = [
     .escape(),
   body("start_time", "Invalid start time")
     .optional({ checkFalsy: true })
-    .isISO8601()
     .toDate(),
   body("end_time", "Invalid end time")
     .optional({ checkFalsy: true })
-    .isISO8601()
     .toDate(),
 
   // Process request after validation and sanitization.
@@ -125,7 +123,7 @@ exports.game_create_post = [
     const errors = validationResult(req);
 
     // Create a Book object with escaped and trimmed data.
-    const book = new Game({
+    const game = new Game({
       title: req.body.title,
       max_players: req.body.max_players,
       min_players: req.body.min_players,
@@ -140,7 +138,6 @@ exports.game_create_post = [
       // Get all authors and genres, which we can use for adding to our book.
       const allGames = await Game.find({})
         .sort({ title: 1 })
-        .populate("bookings")
         .exec();
 
       res.render("game_form", {
@@ -151,7 +148,7 @@ exports.game_create_post = [
 
     } else {
       // Data from form is valid. Save book.
-      await book.save();
+      await game.save();
       res.redirect(game.url);
     }
   }),
