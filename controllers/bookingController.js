@@ -54,13 +54,14 @@ exports.booking_create_get = asyncHandler(async (req, res, next) => {
 });
 
 
-exports.booking_create_post = asyncHandler(async (req, res, next) => {
+/*exports.booking_create_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Booking create POST");
-});
+});*/
  
 
-/* // FIXME: There is a compilation preventing bug in this code
-exports.bookinstance_create_post = [
+
+exports.booking_create_post = [
+  
   body("game", "Game must be specified").trim().isLength({ min: 5 }).escape(),
   body("playername", "Player name must be specified and be longer that 3 characters")
     .trim()
@@ -140,7 +141,7 @@ exports.bookinstance_create_post = [
     }
   }),
 ];
-*/
+
 
 
 
