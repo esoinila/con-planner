@@ -2,6 +2,7 @@ const Booking = require("../models/booking");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Game = require("../models/game");
+//var ObjectId = mongoose.Types.ObjectId();
 
 
 
@@ -80,11 +81,12 @@ exports.booking_create_post = [
 
     const booking = new Booking({
       game: req.body.game,
-      playernamet: req.body.playername,
+      playername: req.body.playername,
       date: req.body.date,
     });
 
-    const games = await Game.find({ "_id": new ObjectId(req.body.game) })
+    // new mongoose.Types.ObjectId(req.body.game)
+    const games = await Game.find({ "_id": req.body.game })
       .sort({ title: 1 })
       .populate("bookings")
       .exec();
