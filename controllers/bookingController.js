@@ -2,9 +2,6 @@ const Booking = require("../models/booking");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Game = require("../models/game");
-//var ObjectId = mongoose.Types.ObjectId();
-
-
 
 // Display list of all Bookings.
 exports.booking_list = asyncHandler(async (req, res, next) => {
@@ -53,12 +50,6 @@ exports.booking_create_get = asyncHandler(async (req, res, next) => {
   });
 
 });
-
-
-/*exports.booking_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Booking create POST");
-});*/
- 
 
 
 exports.booking_create_post = [
