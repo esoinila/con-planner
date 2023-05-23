@@ -5,44 +5,44 @@ const asyncHandler = require("express-async-handler");
 
 // Summary of all games
 exports.index = asyncHandler(async (req, res, next) => {
-    // Get details of games (in parallel)
-    const [
-        numGames,
-        numBookings,
-    ] = await Promise.all([
-        Game.countDocuments({}).exec(),
-        Booking.countDocuments({}).exec(),
-    ]);
+  // Get details of games (in parallel)
+  const [
+    numGames,
+    numBookings,
+  ] = await Promise.all([
+    Game.countDocuments({}).exec(),
+    Booking.countDocuments({}).exec(),
+  ]);
 
-    res.render("index", {
-        title: "Cafe Con Games Home",
-        game_count: numGames,
-        booking_count: numBookings,
-    });
+  res.render("index", {
+    title: "Cafe Con Games Home",
+    game_count: numGames,
+    booking_count: numBookings,
+  });
 });
 
 
 // Display list of all games.
 exports.game_list = asyncHandler(async (req, res, next) => {
-    const allGames = await Game.find({})
-        .sort({ title: 1 })
-        .populate("bookings")
-        .exec();
+  const allGames = await Game.find({})
+    .sort({ title: 1 })
+    .populate("bookings")
+    .exec();
 
-    // Let's add the bookings for each game to bookings array
-    
-    const allBookings = await Booking.find({}).populate("game").exec();
+  // Let's add the bookings for each game to bookings array
 
-    // let's add all the bookings for each game
-    allGames.forEach((game) => {
-      allBookings.forEach((booking) => {
-        if (booking.game._id.toString() === game._id.toString()) {
-          game.bookings.push(booking);
-        }
-      });
+  const allBookings = await Booking.find({}).populate("game").exec();
+
+  // let's add all the bookings for each game
+  allGames.forEach((game) => {
+    allBookings.forEach((booking) => {
+      if (booking.game._id.toString() === game._id.toString()) {
+        game.bookings.push(booking);
+      }
     });
-    
-    res.render("game_list", { title: "Game List", game_list: allGames });
+  });
+
+  res.render("game_list", { title: "Game List", game_list: allGames });
 });
 
 // Display detail page for a specific game.
@@ -72,15 +72,91 @@ exports.game_detail = asyncHandler(async (req, res, next) => {
 exports.game_create_get = asyncHandler(async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const allGames = await Game.find({})
-  .sort({ title: 1 })
-  .populate("bookings")
-  .exec();
+    .sort({ title: 1 })
+    .populate("bookings")
+    .exec();
 
   res.render("game_form", {
     page_title: "Create Game",
-    games: allGames    
+    games: allGames
   });
 });
+
+/*
+exports.game_create_post = asyncHandler(async (req, res, next) => {
+  res.send("NOT IMPLEMENTED: Game create POST");
+});
+*/
+
+
+// Handle book create on POST.
+exports.game_create_post = [
+
+  // Validate and sanitize fields.
+  body("title", "Title must not be empty.")
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+  body("min_players", "1-9 players")
+    .trim()
+    .isInt({ min: 1, max: 9 })
+    .escape(),
+  body("max_players", "1-9 players")
+    .trim()
+    .isInt({ min: 1, max: 9 })
+    .escape(),
+  body("description", "Description must not be under 80 characters.")
+    .trim()
+    .isLength({ min: 80 })
+    .escape(),
+  body("start_time", "Invalid start time")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+  body("end_time", "Invalid end time")
+    .optional({ checkFalsy: true })
+    .isISO8601()
+    .toDate(),
+
+  // Process request after validation and sanitization.
+
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped and trimmed data.
+    const book = new Game({
+      title: req.body.title,
+      max_players: req.body.max_players,
+      min_players: req.body.min_players,
+      description: req.body.description,
+      start_time: req.body.start_time,
+      end_time: req.body.end_time,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      // Get all authors and genres, which we can use for adding to our book.
+      const allGames = await Game.find({})
+        .sort({ title: 1 })
+        .populate("bookings")
+        .exec();
+
+      res.render("game_form", {
+        page_title: "Create Game",
+        games: allGames,
+        errors: errors.array(),
+      });
+
+    } else {
+      // Data from form is valid. Save book.
+      await book.save();
+      res.redirect(game.url);
+    }
+  }),
+];
+
 
 
 // Display Genre update form on GET.
@@ -89,24 +165,21 @@ exports.game_create_get = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Game create GET");
 }); */
 
-exports.game_create_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
-});
 
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.game_update_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.game_update_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 /*
