@@ -82,12 +82,6 @@ exports.game_create_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-/*
-exports.game_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
-});
-*/
-
 
 // Handle book create on POST.
 exports.game_create_post = [
@@ -142,6 +136,7 @@ exports.game_create_post = [
 
       res.render("game_form", {
         page_title: "Create Game",
+        game: game,
         games: allGames,
         errors: errors.array(),
       });

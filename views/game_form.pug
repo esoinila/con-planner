@@ -12,11 +12,11 @@ block content
 
     div.form-group
       label(for='min_players') Min players:
-      input#min_players.form-control(type='number' min="1" max="9" placeholder='Min players' name='min_players' required='true' value=(undefined===min_players ? '' : game.min_players) )
+      input#min_players.form-control(type='number' min="1" max="9" placeholder='Min players' name='min_players' required='true' value=(undefined===min_players ? '3' : game.min_players) )
 
     div.form-group
       label(for='max_players') Max players:
-      input#max_players.form-control(type='number' min="1" max="9" placeholder='Max players' name='max_players' required='true' value=(undefined===max_players ? '' : game.max_players) )
+      input#max_players.form-control(type='number' min="1" max="9" placeholder='Max players' name='max_players' required='true' value=(undefined===max_players ? '5' : game.max_players) )
 
 
     div.form-group
@@ -27,11 +27,11 @@ block content
 
     div.form-group
       label(for='start_time') Start time:
-      input#start_time.form-control(type='time', placeholder='start time' name='start_time' required='true' value=(undefined===start_time ? '' : game.start_time) )
+      input#start_time.form-control(type='time', placeholder='start time' name='start_time' required='true' value=(undefined===start_time ? '15:00' : game.start_time) )
 
     div.form-group
       label(for='end_time') End time:
-      input#end_time.form-control(type='time', placeholder='end time' name='end_time' required='true' value=(undefined===end_time ? '' : game.end_time) )
+      input#end_time.form-control(type='time', placeholder='end time' name='end_time' required='true' value=(undefined===end_time ? '21:00' : game.end_time) )
 
 
 
