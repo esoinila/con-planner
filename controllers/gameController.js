@@ -23,7 +23,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 
-// Display list of all books.
+// Display list of all games.
 exports.game_list = asyncHandler(async (req, res, next) => {
     const allGames = await Game.find({})
         .sort({ title: 1 })

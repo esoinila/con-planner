@@ -84,7 +84,7 @@ exports.booking_create_post = [
       date: req.body.date,
     });
 
-    const games = await Game.find({ "_id": req.body.game }).exec()
+    const games = await Game.find({ "_id": new ObjectId(req.body.game) })
       .sort({ title: 1 })
       .populate("bookings")
       .exec();
