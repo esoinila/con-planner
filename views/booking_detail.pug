@@ -1,0 +1,13 @@
+extends video_layout
+
+block content
+
+  h1 ID: #{booking._id}
+
+  p #[strong Title:]
+    a(href=booking.game.url) #{booking.game.title}
+  p #[strong playername:] #{booking.playername}
+
+  p #[strong Date:] #{booking.date}
+  
+  p #[strong Date_formatted:] #{booking.date_formatted}

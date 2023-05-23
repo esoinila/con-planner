@@ -16,7 +16,7 @@ BookingSchema.virtual("url").get(function () {
   return `/con/booking/${this._id}`;
 });
 
-BookingSchema.virtual("due_back_formatted").get(function () {
+BookingSchema.virtual("date_formatted").get(function () {
   return DateTime.fromJSDate(this.date.toLocaleString(DateTime.DATE_MED));
 });
 
