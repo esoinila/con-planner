@@ -6,7 +6,6 @@ block content
   p #[strong max_players:] #{game.max_players}
   p #[strong min_players:] #{game.min_players}
   p #[strong description:] #{game.description}
-  p #[strong ISBN:] #{book.isbn}
   p #[strong Bookings:]
     each val, index in game.bookings      
       a(href=val.url) #{val.game}: #{val.playername}
