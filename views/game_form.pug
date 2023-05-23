@@ -1,0 +1,36 @@
+extends video_layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Title:
+      input#title.form-control(type='text', placeholder='Name of game' name='title' required='true' value=(undefined===title ? '' : game.title) )
+
+    div.form-group
+      label(for='min_players') Min players:
+      input#title.form-control(type='number', placeholder='Min players' name='min_players' required='true' value=(undefined===min_players ? '' : game.min_players) )
+
+    div.form-group
+      label(for='max_players') Max players:
+      input#title.form-control(type='number', placeholder='Max players' name='max_players' required='true' value=(undefined===max_players ? '' : game.max_players) )
+
+    div.form-group
+      label(for='description') Description:
+      input#title.form-control(type='text', placeholder='description' name='description' required='true' value=(undefined===description ? '' : game.description) )
+
+    div.form-group
+      label(for='start_time') Start time:
+      input#title.form-control(type='time', placeholder='start time' name='start_time' required='true' value=(undefined===start_time ? '' : game.start_time) )
+
+    div.form-group
+      label(for='end_time') End time:
+      input#title.form-control(type='time', placeholder='end time' name='end_time' required='true' value=(undefined===end_time ? '' : game.end_time) )
+
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

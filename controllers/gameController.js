@@ -1,9 +1,8 @@
 const Game = require("../models/game");
 const Booking = require("../models/booking");
-
-
-//const { body, validationResult } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
+
 
 exports.index = asyncHandler(async (req, res, next) => {
     // Get details of games (in parallel)
