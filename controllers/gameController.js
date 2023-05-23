@@ -3,7 +3,7 @@ const Booking = require("../models/booking");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
-
+// Summary of all games
 exports.index = asyncHandler(async (req, res, next) => {
     // Get details of games (in parallel)
     const [
@@ -45,6 +45,7 @@ exports.game_list = asyncHandler(async (req, res, next) => {
     res.render("game_list", { title: "Game List", game_list: allGames });
 });
 
+// Display detail page for a specific game.
 exports.game_detail = asyncHandler(async (req, res, next) => {
   // Get details of game
   const [game, gameInstances] = await Promise.all([
@@ -67,16 +68,26 @@ exports.game_detail = asyncHandler(async (req, res, next) => {
 });
 
 
+// Display book create form on GET.
+exports.game_create_get = asyncHandler(async (req, res, next) => {
+  // Get all authors and genres, which we can use for adding to our book.
+  const allGames = await Game.find({})
+  .sort({ title: 1 })
+  .populate("bookings")
+  .exec();
+
+  res.render("game_form", {
+    page_title: "Create Game",
+    games: allGames    
+  });
+});
+
 
 // Display Genre update form on GET.
-/*exports.game_detail = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game detail GET");
-});*/
-
-// Display Genre update form on GET.
+/*
 exports.game_create_get = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Game create GET");
-});
+}); */
 
 exports.game_create_post = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Game create POST");
@@ -100,42 +111,9 @@ exports.game_update_post = asyncHandler(async (req, res, next) => {
 
 /*
 // Display detail page for a specific book.
-exports.book_detail = asyncHandler(async (req, res, next) => {
-   // Get details of books, book instances for specific book
-   const [book, bookInstances] = await Promise.all([
-     Book.findById(req.params.id).populate("author").populate("genre").exec(),
-     BookInstance.find({ book: req.params.id }).exec(),
-   ]);
- 
-   if (book === null) {
-     // No results.
-     const err = new Error("Book not found");
-     err.status = 404;
-     return next(err);
-   }
- 
-   res.render("book_detail", {
-     title: book.title,
-     book: book,
-     book_instances: bookInstances,
-   });
- });
- 
 
-// Display book create form on GET.
-exports.book_create_get = asyncHandler(async (req, res, next) => {
-   // Get all authors and genres, which we can use for adding to our book.
-   const [allAuthors, allGenres] = await Promise.all([
-     Author.find().exec(),
-     Genre.find().exec(),
-   ]);
- 
-   res.render("book_form", {
-     title: "Create Book",
-     authors: allAuthors,
-     genres: allGenres,
-   });
- });
+
+
  
 // Handle book create on POST.
 exports.book_create_post = [
