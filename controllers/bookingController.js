@@ -2,6 +2,7 @@ const Booking = require("../models/booking");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const Game = require("../models/game");
+const Con = require("../models/con_model");
 
 // Display list of all Bookings.
 exports.booking_list = asyncHandler(async (req, res, next) => {
@@ -84,12 +85,6 @@ exports.booking_create_post = [
 
     const errors = validationResult(req);
 
-    const booking = new Booking({
-      game: req.body.game,
-      playername: req.body.playername,
-      date: req.body.date,
-    });
-
     // new mongoose.Types.ObjectId(req.body.game)
     const games = await Game.find({ "_id": req.body.game })
       .sort({ title: 1 })
@@ -98,6 +93,20 @@ exports.booking_create_post = [
 
     const allBookings = await Booking.find({ "game": req.body.game })
       .populate("game").exec();
+
+    // Find the game so we can read the con
+    const game = await Game.findById(req.body.game)
+    .populate("con")
+    .exec();
+
+      
+    const booking = new Booking({
+      game: req.body.game,
+      playername: req.body.playername,
+      date: req.body.date,
+      con: game.con
+    });
+
 
     games.forEach((game) => {
       allBookings.forEach((booking) => {
