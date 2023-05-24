@@ -26,7 +26,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 // Display list of all games.
 exports.game_list = asyncHandler(async (req, res, next) => {
   const allGames = await Game.find({})
-    .sort({ title: 1 })
+    .sort({ con: 1, title: 1 })
     .populate("bookings")
     .exec();
 
@@ -51,9 +51,10 @@ exports.game_list = asyncHandler(async (req, res, next) => {
 // Display detail page for a specific game.
 exports.game_detail = asyncHandler(async (req, res, next) => {
   // Get details of game
-  const [game, gameInstances] = await Promise.all([
+  const [game, gameInstances, cons] = await Promise.all([
     Game.findById(req.params.id).populate("bookings").exec(),
     Booking.find({ game: req.params.id }).exec(),
+    Con.find({}).populate("games").exec(),
   ]);
 
   if (game === null) {
@@ -67,6 +68,7 @@ exports.game_detail = asyncHandler(async (req, res, next) => {
     title: game.title,
     game: game,
     game_instances: gameInstances,
+    cons: cons,
   });
 });
 
