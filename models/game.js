@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const GameSchema = new Schema({
+    con: { type: Schema.Types.ObjectId, ref: "Con", required: true }, 
     title: { type: String, required: true },
     max_players: { type: Number, required: true },
     min_players: { type: Number, required: true },
