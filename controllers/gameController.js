@@ -89,7 +89,7 @@ exports.game_create_get = asyncHandler(async (req, res, next) => {
   res.render("game_form", {
     page_title: "Create Game",
     games: allGames,
-    cons: allCons,
+    con_list: allCons,
     con_list_is_empty: con_list_is_empty,
   });
 });
@@ -130,6 +130,7 @@ exports.game_create_post = [
 
     // Create a Book object with escaped and trimmed data.
     const game = new Game({
+      con: req.body.con,
       title: req.body.title,
       max_players: req.body.max_players,
       min_players: req.body.min_players,
