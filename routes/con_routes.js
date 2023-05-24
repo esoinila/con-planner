@@ -4,11 +4,42 @@ const router = express.Router();
 // Require controller modules.
 const game_controller = require("../controllers/gameController");
 const booking_controller = require("../controllers/bookingController");
+const con_controller = require("../controllers/conController");
 
 /// GAME ROUTES ///
 
 // GET catalog home page.
 router.get("/", game_controller.index);
+
+
+
+// GET request for creating a Con. NOTE This must come before routes that display Con (uses id).
+router.get("/con/create", con_controller.con_create_get);
+
+
+// POST request for creating Con.
+router.post("/con/create", con_controller.con_create_post);
+
+// GET request to delete Con.
+router.get("/con/:id/delete", con_controller.con_delete_get);
+
+// POST request to delete Con.
+router.post("/con/:id/delete", con_controller.con_delete_post);
+
+// GET request to update Con.
+router.get("/con/:id/update", con_controller.con_update_get);
+
+// POST request to update Con.
+router.post("/con/:id/update", con_controller.con_update_post);
+
+// GET request for one Con.
+router.get("/con/:id", con_controller.con_detail);
+
+// GET request for list of all Con items.
+router.get("/cons", con_controller.con_list); /**/
+
+
+/// GAME ROUTES ///
 
 // GET request for creating a Game. NOTE This must come before routes that display Game (uses id).
 router.get("/game/create", game_controller.game_create_get);

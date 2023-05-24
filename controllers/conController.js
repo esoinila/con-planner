@@ -64,7 +64,7 @@ exports.con_list = asyncHandler(async (req, res, next) => {
 
 
 // Display detail page for a specific game.
-exports.game_detail = asyncHandler(async (req, res, next) => {
+exports.con_detail = asyncHandler(async (req, res, next) => {
   // Get details of game
   const [game, gameInstances] = await Promise.all([
     Game.findById(req.params.id).populate("bookings").exec(),
@@ -87,7 +87,7 @@ exports.game_detail = asyncHandler(async (req, res, next) => {
 
 
 // Display book create form on GET.
-exports.game_create_get = asyncHandler(async (req, res, next) => {
+exports.con_create_get = asyncHandler(async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
   const allGames = await Game.find({})
     .sort({ title: 1 })
@@ -102,7 +102,7 @@ exports.game_create_get = asyncHandler(async (req, res, next) => {
 
 
 // Handle book create on POST.
-exports.game_create_post = [
+exports.con_create_post = [
 
   // Validate and sanitize fields.
   body("title", "Title must not be empty.")
@@ -169,34 +169,24 @@ exports.game_create_post = [
 
 
 
-// Display Genre update form on GET.
-/*
-exports.game_create_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create GET");
-}); */
-
-
-exports.game_delete_get = asyncHandler(async (req, res, next) => {
+exports.con_delete_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game create POST");
 });
 
-exports.game_delete_post = asyncHandler(async (req, res, next) => {
+exports.con_delete_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game create POST");
 });
 
-exports.game_update_get = asyncHandler(async (req, res, next) => {
+exports.con_update_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game create POST");
 });
 
-exports.game_update_post = asyncHandler(async (req, res, next) => {
+exports.con_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 /*
 // Display detail page for a specific book.
-
-
-
  
 // Handle book create on POST.
 exports.book_create_post = [
