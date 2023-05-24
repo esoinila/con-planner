@@ -6,8 +6,9 @@ const ConSchema = new Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     // let's add start-time and end-time
-    start_time: { type: Date, default: Date.now },
-    end_time: { type: Date, default: Date.now },
+    date: { type: Date, required: true },
+
+    start_time: { type: Date, required: true },
     // let's add a list of players
     games: [{ type: Schema.Types.ObjectId, ref: "Game" }],
     num_games: { type: Number, default: 0 },

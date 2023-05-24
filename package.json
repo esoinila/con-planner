@@ -8,7 +8,6 @@
     "serverstart": "SET DEBUG=library:* & npm run devstart"
   },
   "dependencies": {
-    "air-datepicker": "^3.3.5",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",

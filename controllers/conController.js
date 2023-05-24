@@ -4,10 +4,7 @@ const Game = require("../models/game");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
-const AirDatepicker = require('air-datepicker');
-//import 'air-datepicker/air-datepicker.css'
 
-//new AirDatepicker('#el' [, options]);
 
 // Summary of all cons
 exports.index = asyncHandler(async (req, res, next) => {
