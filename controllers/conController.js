@@ -4,6 +4,11 @@ const Game = require("../models/game");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
+const AirDatepicker = require('air-datepicker');
+//import 'air-datepicker/air-datepicker.css'
+
+//new AirDatepicker('#el' [, options]);
+
 // Summary of all cons
 exports.index = asyncHandler(async (req, res, next) => {
   // Get details of games (in parallel)
@@ -67,22 +72,22 @@ exports.con_list = asyncHandler(async (req, res, next) => {
 // Display detail page for a specific game.
 exports.con_detail = asyncHandler(async (req, res, next) => {
   // Get details of game
-  const [game, gameInstances] = await Promise.all([
-    Game.findById(req.params.id).populate("bookings").exec(),
-    Booking.find({ game: req.params.id }).exec(),
+  const [con, games] = await Promise.all([
+    Con.findById(req.params.id).populate("bookings").exec(),
+    Game.find({ game: req.params.id }).exec(),
   ]);
 
-  if (game === null) {
+  if (con === null) {
     // No results.
     const err = new Error("Game not found");
     err.status = 404;
     return next(err);
   }
 
-  res.render("game_detail", {
-    title: game.title,
-    game: game,
-    game_instances: gameInstances,
+  res.render("con_detail", {
+    title: con.title,
+    con: con,
+    games: games,
   });
 });
 
