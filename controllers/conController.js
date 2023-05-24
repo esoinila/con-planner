@@ -8,184 +8,173 @@ const asyncHandler = require("express-async-handler");
 
 // Summary of all cons
 exports.index = asyncHandler(async (req, res, next) => {
-  // Get details of games (in parallel)
-  const [
-    numCons,
-    numGames,
-  ] = await Promise.all([
-    Con.countDocuments({}).exec(),
-    Game.countDocuments({}).exec(),
-  ]);
+    // Get details of games (in parallel)
+    const [
+        numCons,
+        numGames,
+    ] = await Promise.all([
+        Con.countDocuments({}).exec(),
+        Game.countDocuments({}).exec(),
+    ]);
 
-  res.render("index", {
-    title: "Cafe Cons",
-    con_count: numCons,
-    game_count: numGames,
-  });
+    res.render("index", {
+        title: "Cafe Cons",
+        con_count: numCons,
+        game_count: numGames,
+    });
 });
 
 // Display list of all cons and their games.
 exports.con_list = asyncHandler(async (req, res, next) => {
     const allCons = await Con.find({})
-      .sort({ title: 1 })
-      .populate("games")
-      .exec();
+        .sort({ title: 1 })
+        .populate("games")
+        .exec();
 
     const allGames = await Game.find({})
-      .sort({ title: 1 })
-      .populate("bookings")
-      .exec();
+        .sort({ title: 1 })
+        .populate("bookings")
+        .exec();
 
     // let's add all the games for each con
     allCons.forEach((con) => {
         allGames.forEach((game) => {
-          if (game.con._id.toString() === con._id.toString()) {
-            con.games.push(game);
-          }
+            if (game.con._id.toString() === con._id.toString()) {
+                con.games.push(game);
+            }
         });
-      });
-  
-      
+    });
+
+
 
     // Let's add the bookings for each game to bookings array
-  
+
     const allBookings = await Booking.find({}).populate("game").exec();
-  
+
     // let's add all the bookings for each game
     allGames.forEach((game) => {
-      allBookings.forEach((booking) => {
-        if (booking.game._id.toString() === game._id.toString()) {
-          game.bookings.push(booking);
-        }
-      });
+        allBookings.forEach((booking) => {
+            if (booking.game._id.toString() === game._id.toString()) {
+                game.bookings.push(booking);
+            }
+        });
     });
-  
+
     res.render("con_index", { title: "Con List", game_list: allGames, con_list: allCons });
-  });
-  
+});
+
 
 
 
 // Display detail page for a specific game.
 exports.con_detail = asyncHandler(async (req, res, next) => {
-  // Get details of game
-  const [con, games] = await Promise.all([
-    Con.findById(req.params.id).populate("bookings").exec(),
-    Game.find({ game: req.params.id }).exec(),
-  ]);
+    // Get details of game
+    const [con, games] = await Promise.all([
+        Con.findById(req.params.id).populate("bookings").exec(),
+        Game.find({ game: req.params.id }).exec(),
+    ]);
 
-  if (con === null) {
-    // No results.
-    const err = new Error("Game not found");
-    err.status = 404;
-    return next(err);
-  }
+    if (con === null) {
+        // No results.
+        const err = new Error("Game not found");
+        err.status = 404;
+        return next(err);
+    }
 
-  res.render("con_detail", {
-    title: con.title,
-    con: con,
-    games: games,
-  });
+    res.render("con_detail", {
+        title: con.title,
+        con: con,
+        games: games,
+    });
 });
 
 
 // Display book create form on GET.
 exports.con_create_get = asyncHandler(async (req, res, next) => {
-  // Get all authors and genres, which we can use for adding to our book.
-  const allCons = await Con.find({})
-    .sort({ title: 1 })
-    .populate("games")
-    .exec();
+    // Get all authors and genres, which we can use for adding to our book.
+    const allCons = await Con.find({})
+        .sort({ title: 1 })
+        .populate("games")
+        .exec();
 
-  res.render("con_form", {
-    page_title: "Create Con",
-    games: allCons,
-  });
+    res.render("con_form", {
+        page_title: "Create Con",
+        games: allCons,
+    });
 });
 
 
-// Handle book create on POST.
+// Handle con create on POST.
 exports.con_create_post = [
 
-  // Validate and sanitize fields.
-  body("title", "Title must not be empty.")
-    .trim()
-    .isLength({ min: 5 })
-    .escape(),
-  body("min_players", "1-9 players")
-    .trim()
-    .isInt({ min: 1, max: 9 })
-    .escape(),
-  body("max_players", "1-9 players")
-    .trim()
-    .isInt({ min: 1, max: 9 })
-    .escape(),
-  body("description", "Description must not be under 80 characters.")
-    .trim()
-    .isLength({ min: 80 })
-    .escape(),
-  body("start_time", "Invalid start time")
-    .optional({ checkFalsy: true })
-    .toDate(),
-  body("end_time", "Invalid end time")
-    .optional({ checkFalsy: true })
-    .toDate(),
+    // Validate and sanitize fields.
+    body("title", "Title must not be empty.")
+        .trim()
+        .isLength({ min: 5 })
+        .escape(),
+    body("description", "Description must not be under 80 characters.")
+        .trim()
+        .isLength({ min: 30 })
+        .escape(),
+    body("date", "Invalid date")
+        .optional({ checkFalsy: true })
+        .toDate(),
+    body("time", "Invalid time")
+        .optional({ checkFalsy: true })
+        .toDate(),
 
-  // Process request after validation and sanitization.
+    // Process request after validation and sanitization.
 
-  asyncHandler(async (req, res, next) => {
-    // Extract the validation errors from a request.
-    const errors = validationResult(req);
+    asyncHandler(async (req, res, next) => {
+        // Extract the validation errors from a request.
+        const errors = validationResult(req);
 
-    // Create a Book object with escaped and trimmed data.
-    const game = new Game({
-      title: req.body.title,
-      max_players: req.body.max_players,
-      min_players: req.body.min_players,
-      description: req.body.description,
-      start_time: req.body.start_time,
-      end_time: req.body.end_time,
-    });
+        // Create a Book object with escaped and trimmed data.
+        const con = new Con({
+            title: req.body.title,
+            description: req.body.description,
+            date: req.body.date,
+            time: req.body.start_time,
+        });
 
-    if (!errors.isEmpty()) {
-      // There are errors. Render form again with sanitized values/error messages.
+        if (!errors.isEmpty()) {
+            // There are errors. Render form again with sanitized values/error messages.
 
-      // Get all authors and genres, which we can use for adding to our book.
-      const allGames = await Game.find({})
-        .sort({ title: 1 })
-        .exec();
+            const allCons = await Con.find({})
+                .sort({ title: 1 })
+                .populate("games")
+                .exec();
 
-      res.render("game_form", {
-        page_title: "Create Game",
-        game: game,
-        games: allGames,
-        errors: errors.array(),
-      });
+            res.render("con_form", {
+                page_title: "Create Con",
+                games: allCons,
+                errors: errors.array(),
+            });
 
-    } else {
-      // Data from form is valid. Save book.
-      await game.save();
-      res.redirect(game.url);
-    }
-  }),
+        } else {
+            // Data from form is valid. Save book.
+            await con.save();
+            res.redirect(con.url);
+        }
+    }),
 ];
 
 
 
 exports.con_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.con_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.con_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.con_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 /*

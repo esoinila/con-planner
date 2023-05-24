@@ -8,7 +8,7 @@ const ConSchema = new Schema({
     // let's add start-time and end-time
     date: { type: Date, required: true },
 
-    start_time: { type: Date, required: true },
+    time: { type: Date, required: true },
     // let's add a list of players
     games: [{ type: Schema.Types.ObjectId, ref: "Game" }],
     num_games: { type: Number, default: 0 },
