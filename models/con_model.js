@@ -21,5 +21,12 @@ ConSchema.virtual("url").get(function () {
   return `/con/con/${this._id}`;
 });
 
-// Export model
+ConSchema.virtual("date_formatted").get(function () {
+  
+    let string = DateTime.fromJSDate(this.date).toLocaleString(DateTime.DATE_MED);    
+    return string;
+  });
+
+
+  // Export model
 module.exports = mongoose.model("Con", ConSchema);
