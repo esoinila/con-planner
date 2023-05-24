@@ -21,4 +21,4 @@ ConSchema.virtual("url").get(function () {
 });
 
 // Export model
-module.exports = mongoose.model("Con", GameSchema);
+module.exports = mongoose.model("Con", ConSchema);

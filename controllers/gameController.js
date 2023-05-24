@@ -1,5 +1,6 @@
 const Game = require("../models/game");
 const Booking = require("../models/booking");
+const Con = require("../models/con_model");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
@@ -42,7 +43,9 @@ exports.game_list = asyncHandler(async (req, res, next) => {
     });
   });
 
-  res.render("game_list", { title: "Game List", game_list: allGames });
+  const allCons = await Con.find({}).populate("games").exec();
+
+  res.render("game_list", { title: "Game List", game_list: allGames, con_list: allCons });
 });
 
 // Display detail page for a specific game.
