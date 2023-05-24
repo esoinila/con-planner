@@ -147,12 +147,22 @@ exports.game_create_post = [
         .sort({ title: 1 })
         .exec();
 
+      const allCons = await Con.find({}).populate("games").exec();
+
+      let con_list_is_empty = false;
+      if (allCons.length === 0) {
+        con_list_is_empty = true;
+      }
+
       res.render("game_form", {
         page_title: "Create Game",
         game: game,
         games: allGames,
+        con_list: allCons,
+        con_list_is_empty: con_list_is_empty,
         errors: errors.array(),
       });
+
 
     } else {
       // Data from form is valid. Save book.
