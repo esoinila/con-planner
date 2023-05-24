@@ -14,7 +14,7 @@ const GameSchema = new Schema({
     // let's add a list of players
     bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
     num_bookings: { type: Number, default: 0 },
-    is_full: { type: Boolean, default: false }
+    is_full: { type: Boolean, default: false },
 });
 
 // Virtual for book's URL

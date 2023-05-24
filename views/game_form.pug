@@ -4,14 +4,16 @@ block content
   h1= page_title
 
   form(method='POST' action='')
+    unless con_list_is_empty
+      div.form-group
+        label(for='con') Select con:
+        select#con.form-control(type='select' placeholder='Select con' name='con' required='true')
+          - con_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+          for con in con_list
+            option(value=con._id, selected=(selected_con==con._id.toString() ? 'selected' : false) ) #{con.title}
 
-    div.form-group
-      label(for='con') Select con:
-      select#con.form-control(type='select' placeholder='Select con' name='con' required='true')
-        - con_list.sort(function(a, b) {let textA = a.title.toUpperCase(); let textB = b.title.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
-        for con in con_list
-          option(value=con._id, selected=(selected_con==con._id.toString() ? 'selected' : false) ) #{con.title}
-
+    if con_list_is_empty      
+      p You need to create a Con first before you can create a game.
 
     div.form-group
       label(for='title') Title:

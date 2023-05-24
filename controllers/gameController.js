@@ -79,9 +79,18 @@ exports.game_create_get = asyncHandler(async (req, res, next) => {
     .populate("bookings")
     .exec();
 
+  const allCons = await Con.find({}).populate("games").exec();
+
+  let con_list_is_empty = false;
+  if (allCons.length === 0) {
+    con_list_is_empty = true;
+  }
+
   res.render("game_form", {
     page_title: "Create Game",
-    games: allGames
+    games: allGames,
+    cons: allCons,
+    con_list_is_empty: con_list_is_empty,
   });
 });
 
