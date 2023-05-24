@@ -112,16 +112,17 @@ exports.con_create_post = [
         .trim()
         .isLength({ min: 5 })
         .escape(),
-    body("description", "Description must not be under 80 characters.")
+    body("description", "Description must not be under 30 characters.")
         .trim()
         .isLength({ min: 30 })
         .escape(),
     body("date", "Invalid date")
         .optional({ checkFalsy: true })
         .toDate(),
-    body("time", "Invalid time")
-        .optional({ checkFalsy: true })
-        .toDate(),
+    body("time", "Invalid time") // validate 24h format here
+        .trim()
+        //.matches(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+        ,        
 
     // Process request after validation and sanitization.
 
@@ -134,7 +135,7 @@ exports.con_create_post = [
             title: req.body.title,
             description: req.body.description,
             date: req.body.date,
-            time: req.body.start_time,
+            time: req.body.time,
         });
 
         if (!errors.isEmpty()) {
@@ -147,7 +148,7 @@ exports.con_create_post = [
 
             res.render("con_form", {
                 page_title: "Create Con",
-                games: allCons,
+                cons: allCons,
                 errors: errors.array(),
             });
 
