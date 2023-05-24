@@ -8,7 +8,7 @@ block content
     each game in game_list
       li
         a(href=game.url) <h3> #{game.title}</h3>
-        <p>Con: #{game.con}</p>    
+        <p>Con: #{game.con.title}, #{game.con.date}</p>    
         <p>#{game.description}</p>
         <p>Peli pelataan #{game.min_players} – #{game.max_players} pelaajalla.</p>
         <p>ilmoittautumisia: ( #{game.bookings.length} / #{game.max_players} ) </p>
