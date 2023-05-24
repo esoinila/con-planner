@@ -1,5 +1,6 @@
 const Con = require("../models/con_model");
 const Booking = require("../models/booking");
+const Game = require("../models/game");
 const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
@@ -57,7 +58,7 @@ exports.con_list = asyncHandler(async (req, res, next) => {
       });
     });
   
-    res.render("game_list", { title: "Game List", game_list: allGames });
+    res.render("con_index", { title: "Con List", game_list: allGames, con_list: allCons });
   });
   
 
