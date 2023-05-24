@@ -90,14 +90,14 @@ exports.con_detail = asyncHandler(async (req, res, next) => {
 // Display book create form on GET.
 exports.con_create_get = asyncHandler(async (req, res, next) => {
   // Get all authors and genres, which we can use for adding to our book.
-  const allGames = await Game.find({})
+  const allCons = await Con.find({})
     .sort({ title: 1 })
-    .populate("bookings")
+    .populate("games")
     .exec();
 
-  res.render("game_form", {
-    page_title: "Create Game",
-    games: allGames
+  res.render("con_form", {
+    page_title: "Create Con",
+    games: allCons,
   });
 });
 
