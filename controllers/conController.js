@@ -70,7 +70,7 @@ exports.con_list = asyncHandler(async (req, res, next) => {
 exports.con_detail = asyncHandler(async (req, res, next) => {
     // Get details of game
     const [con, games] = await Promise.all([
-        Con.findById(req.params.id).populate("bookings").exec(),
+        Con.findById(req.params.id).populate("games").exec(),
         Game.find({ game: req.params.id }).exec(),
     ]);
 

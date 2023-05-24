@@ -4,8 +4,8 @@ block content
   h1 Title: #{con.title}
 
   p #[strong description:] #{con.description}
-  p #[strong start_time:] #{con.start_time}
-  p #[strong end_time:] #{con.end_time}
+  p #[strong date:] #{con.date}
+  p #[strong time:] #{con.time}
   p #[strong Games:]
     each val, index in con.games      
       a(href=val.url) #{val.title}
