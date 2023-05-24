@@ -6,8 +6,9 @@ block content
   ul
     each con in con_list
       li
-        a(href=con.url) 
-        p #{con.date}, #{con.title}, #{con.description}
+        a(href=con.url) #[strong Con:] #{con.title}
+        p #[strong Date:] #{con.date_formatted} 
+        p #[strong Description:] #{con.description} 
 
     else
       li There are no cons.
