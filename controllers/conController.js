@@ -156,6 +156,7 @@ exports.con_create_post = [
 
             res.render("con_form", {
                 page_title: "Create Con",
+                con: con,
                 cons: allCons,
                 errors: errors.array(),
             });

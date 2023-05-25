@@ -156,11 +156,6 @@ exports.game_create_post = [
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
 
-      // Get all authors and genres, which we can use for adding to our book.
-      const allGames = await Game.find({})
-        .sort({ title: 1 })
-        .exec();
-
       const allCons = await Con.find({}).populate("games").exec();
 
       let con_list_is_empty = false;
@@ -171,7 +166,6 @@ exports.game_create_post = [
       res.render("game_form", {
         page_title: "Create Game",
         game: game,
-        games: allGames,
         con_list: allCons,
         con_list_is_empty: con_list_is_empty,
         errors: errors.array(),
