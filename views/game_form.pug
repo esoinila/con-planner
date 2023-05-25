@@ -17,7 +17,7 @@ block content
 
     div.form-group
       label(for='title') Title:
-      input#title.form-control(type='text', placeholder='title' name='title' required='true' value=(undefined===title ? '' : game.title) )
+      input#title.form-control(type='text', placeholder='Title' name='title' required='true' value=(undefined===title ? '' : game.title) )
 
 
     div.form-group
@@ -31,7 +31,7 @@ block content
 
     div.form-group
       label(for='description') Description:
-      textarea#description.form-control(type='textarea', placeholder='Description' name='description' required='true') #{undefined===game ? '' : game.description}
+      textarea#description.form-control(type='textarea', placeholder='Description' name='description' required='true' value=(undefined===game ? '' : game.description) )
 
 
 
