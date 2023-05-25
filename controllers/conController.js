@@ -8,165 +8,177 @@ const asyncHandler = require("express-async-handler");
 
 // LANDING PAGE
 exports.index = asyncHandler(async (req, res, next) => {
-    // Get details of games (in parallel)
-    const [
-        numCons,
-        numGames,
-        numBookings,
-        allCons,
-    ] = await Promise.all([
-        Con.countDocuments({}).exec(),
-        Game.countDocuments({}).exec(),
-        Booking.countDocuments({}).exec(),
-        Con.find({})
-        .sort({ title: 1 })
-        .populate("games")
-        .exec(),
-    ]);
+  // Get details of games (in parallel)
+  const [
+    numCons,
+    numGames,
+    numBookings,
+    allCons,
+  ] = await Promise.all([
+    Con.countDocuments({}).exec(),
+    Game.countDocuments({}).exec(),
+    Booking.countDocuments({}).exec(),
+    Con.find({})
+      .sort({ title: 1 })
+      .populate("games")
+      .exec(),
+  ]);
 
-    res.render("index", {
-        title: "Using Con-planner in five steps",
-        con_count: numCons,
-        game_count: numGames,
-        con_list: allCons,
-        booking_count: numBookings,
-        
-    });
+  res.render("index", {
+    title: "Using Con-planner in five steps",
+    con_count: numCons,
+    game_count: numGames,
+    con_list: allCons,
+    booking_count: numBookings,
+
+  });
 });
 
 
 // CON LIST.
 exports.con_list = asyncHandler(async (req, res, next) => {
-    const allCons = await Con.find({})
-        .sort({ title: 1 })
-        .populate("games")
-        .exec();
+  const allCons = await Con.find({})
+    .sort({ title: 1 })
+    .populate("games")
+    .exec();
 
-    const allGames = await Game.find({})
-        .sort({ title: 1 })
-        .populate("bookings")
-        .exec();
+  const allGames = await Game.find({})
+    .sort({ title: 1 })
+    .populate("bookings")
+    .exec();
 
-    // let's add all the games for each con
-    allCons.forEach((con) => {
-        allGames.forEach((game) => {
-            if (game.con._id.toString() === con._id.toString()) {
-                con.games.push(game);
-            }
-        });
-    });
-
-    // Let's add the bookings for each game to bookings array
-    const allBookings = await Booking.find({}).populate("game").exec();
-
-    // let's add all the bookings for each game
+  // let's add all the games for each con
+  allCons.forEach((con) => {
     allGames.forEach((game) => {
-        allBookings.forEach((booking) => {
-            if (booking.game._id.toString() === game._id.toString()) {
-                game.bookings.push(booking);
-            }
-        });
+      if (game.con._id.toString() === con._id.toString()) {
+        con.games.push(game);
+      }
     });
+  });
 
-    res.render("con_index", { title: "Con List", game_list: allGames, con_list: allCons });
+  // Let's add the bookings for each game to bookings array
+  const allBookings = await Booking.find({}).populate("game").exec();
+
+  // let's add all the bookings for each game
+  allGames.forEach((game) => {
+    allBookings.forEach((booking) => {
+      if (booking.game._id.toString() === game._id.toString()) {
+        game.bookings.push(booking);
+      }
+    });
+  });
+
+  res.render("con_index", { title: "Con List", game_list: allGames, con_list: allCons });
 });
 
 
 
 
-// Display detail page for a specific game.
+// Display detail page for a specific con.
 exports.con_detail = asyncHandler(async (req, res, next) => {
-    // Get details of game
-    const [con, games] = await Promise.all([
-        Con.findById(req.params.id).populate("games").exec(),
-        Game.find({ game: req.params.id }).exec(),
-    ]);
+  // Get details of game
+  const [con, games, bookings] = await Promise.all([
+    Con.findById(req.params.id).populate("games").exec(),
+    Game.find({ con: req.params.id }).sort({ con: 1, title: 1 })
+      .populate("con").populate("bookings").exec(),
+    Booking.find({ con: req.params.id }).populate("game").exec(),
+  ]);
 
-    if (con === null) {
-        // No results.
-        const err = new Error("Game not found");
-        err.status = 404;
-        return next(err);
-    }
-
-    res.render("con_detail", {
-        title: con.title,
-        con: con,
-        games: games,
+  games.forEach((game) => {
+    bookings.forEach((booking) => {
+      if (booking.game._id.toString() === game._id.toString()) {
+        game.bookings.push(booking);
+      }
     });
+  });
+
+
+  if (con === null) {
+    // No results.
+    const err = new Error("Game not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  res.render("new_con_detail", {
+    title: con.title,
+    con: con,
+    games: games,
+    bookings: bookings,
+  });
 });
 
 
-// Display book create form on GET.
+// Display con create form on GET.
 exports.con_create_get = asyncHandler(async (req, res, next) => {
-    // Get all authors and genres, which we can use for adding to our book.
-    const allCons = await Con.find({})
-        .sort({ title: 1 })
-        .populate("games")
-        .exec();
+  // Get all authors and genres, which we can use for adding to our book.
+  const allCons = await Con.find({})
+    .sort({ title: 1 })
+    .populate("games")
+    .exec();
 
-    res.render("con_form", {
-        page_title: "Create Con",
-        games: allCons,
-    });
+  res.render("con_form", {
+    page_title: "Create Con",
+    games: allCons,
+  });
 });
 
 
 // Handle con create on POST.
 exports.con_create_post = [
 
-    // Validate and sanitize fields.
-    body("title", "Title must not be empty.")
-        .trim()
-        .isLength({ min: 5 })
-        .escape(),
-    body("description", "Description must not be under 30 characters.")
-        .trim()
-        .isLength({ min: 30 })
-        .escape(),
-    body("date", "Invalid date")
-        .optional({ checkFalsy: true })
-        .toDate(),
-    body("time", "Invalid time") // validate 24h format here
-        .trim()
-        //.matches(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
-        ,        
+  // Validate and sanitize fields.
+  body("title", "Title must not be empty.")
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+  body("description", "Description must not be under 30 characters.")
+    .trim()
+    .isLength({ min: 30 })
+    .escape(),
+  body("date", "Invalid date")
+    .optional({ checkFalsy: true })
+    .toDate(),
+  body("time", "Invalid time") // validate 24h format here
+    .trim()
+  //.matches(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+  ,
 
-    // Process request after validation and sanitization.
+  // Process request after validation and sanitization.
 
-    asyncHandler(async (req, res, next) => {
-        // Extract the validation errors from a request.
-        const errors = validationResult(req);
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
 
-        // Create a Book object with escaped and trimmed data.
-        const con = new Con({
-            title: req.body.title,
-            description: req.body.description,
-            date: req.body.date,
-            time: req.body.time,
-        });
+    // Create a Book object with escaped and trimmed data.
+    const con = new Con({
+      title: req.body.title,
+      description: req.body.description,
+      date: req.body.date,
+      time: req.body.time,
+    });
 
-        if (!errors.isEmpty()) {
-            // There are errors. Render form again with sanitized values/error messages.
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
 
-            const allCons = await Con.find({})
-                .sort({ title: 1 })
-                .populate("games")
-                .exec();
+      const allCons = await Con.find({})
+        .sort({ title: 1 })
+        .populate("games")
+        .exec();
 
-            res.render("con_form", {
-                page_title: "Create Con",
-                con: con,
-                cons: allCons,
-                errors: errors.array(),
-            });
+      res.render("con_form", {
+        page_title: "Create Con",
+        con: con,
+        cons: allCons,
+        errors: errors.array(),
+      });
 
-        } else {
-            // Data from form is valid. Save book.
-            await con.save();
-            res.redirect(con.url);
-        }
-    }),
+    } else {
+      // Data from form is valid. Save book.
+      await con.save();
+      res.redirect(con.url);
+    }
+  }),
 ];
 
 
@@ -174,10 +186,10 @@ exports.con_create_post = [
 exports.con_delete_get = asyncHandler(async (req, res, next) => {
 
   const con = await Con.findById(req.params.id)
-  
+
   const [matching_games, matching_bookings] = await Promise.all([
-    Game.find({con : req.params.id}).populate("bookings").exec(),
-    Booking.find({con: req.params.id }).populate("game").populate("con").exec(),
+    Game.find({ con: req.params.id }).populate("bookings").exec(),
+    Booking.find({ con: req.params.id }).populate("game").populate("con").exec(),
   ]);
 
   con.games = matching_games;
@@ -190,7 +202,7 @@ exports.con_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("con_delete", {
     title: "Delete Con",
-    con: con,    
+    con: con,
   });
 });
 
@@ -201,11 +213,11 @@ exports.con_delete_post = asyncHandler(async (req, res, next) => {
   const con = await Con.findById(req.body.conid).populate("bookings").exec();
 
   const matching_bookings = await Booking.find({ con: req.body.conid })
-    .populate("con")  
+    .populate("con")
     .exec();
 
   const matching_games = await Game.find({ con: req.body.conid })
-    .populate("con")  
+    .populate("con")
     .exec();
 
 
@@ -221,12 +233,12 @@ exports.con_delete_post = asyncHandler(async (req, res, next) => {
     // Delete all bookings associated with this game
     if (matching_bookings.length > 0) {
       await Booking.deleteMany({ con: req.body.conid }).exec();
-    } 
+    }
 
     // Delete all games associated with this game
     if (matching_games.length > 0) {
       await Game.deleteMany({ con: req.body.conid }).exec();
-    } 
+    }
 
     // Delete object and redirect to the list of bookings.
     await Con.findByIdAndRemove(req.body.conid);
@@ -239,11 +251,11 @@ exports.con_delete_post = asyncHandler(async (req, res, next) => {
 
 
 exports.con_update_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 exports.con_update_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game create POST");
 });
 
 /*

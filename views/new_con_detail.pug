@@ -1,0 +1,31 @@
+extends video_layout
+
+block content
+
+  h1 Title: #{con.title}
+
+  p #[strong description:] #{con.description}
+  p #[strong date:] #{con.date}
+  p #[strong time:] #{con.time}
+  a(href=con.url+'/delete') Delete this con
+
+  ul
+    
+    each game in games
+      li
+        a(href=game.url) <h3> #{game.title}</h3>
+        <p><strong>Con</strong>: #{game.con.title}, #{game.con.date_formatted}</p>    
+        <p>#{game.description}</p>
+        <p>Peli pelataan #{game.min_players} – #{game.max_players} pelaajalla.</p>
+        <p><strong>Bookings:</strong> ( #{game.bookings.length} / #{game.max_players} ) </p>
+        <p><strong>Game time:</strong> #{game.start_time} — #{game.end_time}</p> 
+        <p><strong>Players:</strong> 
+            each player, index in game.bookings
+                <em> #{player.playername}  
+                if index < game.bookings.length - 1
+                    |,                    
+                </em>            
+        </p>
+
+    else
+      li There are no games for this con.
