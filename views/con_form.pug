@@ -8,22 +8,21 @@ block content
 
     div.form-group
       label(for='title') Title:
-      input#title.form-control(type='text', placeholder='title' name='title' required='true' value=(undefined===title ? '' : con.title) )
+      input#title.form-control(type='text', placeholder='title' name='title' required='true' value=(undefined===con ? '' : con.title) )
 
 
     div.form-group
       label(for='description') Description:
-      textarea#description.form-control(type='textarea', placeholder='Description' name='description' required='true') #{undefined===game ? '' : con.description}
+        textarea#description.form-control(type='textarea', placeholder='Description' name='description' required='true' value=(undefined===con ? '' : con.description) )
 
     div.form-group
       label(for='date') Date:
-      input#date.form-control(type='date', placeholder='date' name='date' required='true' value=(undefined===date ? '15:00' : con.date) )
+      input#date.form-control(type='date', placeholder='date' name='date' required='true' value=(undefined===con ? '15:00' : con.date) )
 
 
     div.form-group
       label(for='time') Time:
-      input#time.form-control(type='time', placeholder='time' name='time' required='true' value=(undefined===time ? '15:00' : con.time) )
-
+      input#time.form-control(type='time', placeholder='time' name='time' required='true' value=(undefined===con ? '15:00' : con.time) )
 
 
     button.btn.btn-primary(type='submit') Submit
@@ -32,4 +31,4 @@ block content
     ul
       for error in errors
         li!= error.msg
-    p received con values: #{con.title} #{con.description} #{con.date} #{con.time}
+    p received con values: #{con.title} #{con.description} #{con.date} #{con.time} 
