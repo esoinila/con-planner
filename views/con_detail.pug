@@ -6,11 +6,6 @@ block content
   p #[strong description:] #{con.description}
   p #[strong date:] #{con.date}
   p #[strong time:] #{con.time}
-  p #[strong Games:]
-    each val, index in con.games      
-      a(href=val.url) #{val.title}
-      if index < con.games.length - 1
-        |,
   a(href=con.url+'/delete') Delete this con
   
 
