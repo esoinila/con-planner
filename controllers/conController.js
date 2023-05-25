@@ -194,11 +194,6 @@ exports.con_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-/*
-exports.con_delete_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Con delete POST");
-});
-*/
 
 // Handle Con delete on POST.
 exports.con_delete_post = asyncHandler(async (req, res, next) => {

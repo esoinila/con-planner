@@ -130,9 +130,9 @@ exports.game_create_post = [
     .isLength({ min: 80 })
     .escape(),
   body("start_time", "Invalid start time")
-    .optional({ checkFalsy: true }),
+    .trim(),
   body("end_time", "Invalid end time")
-    .optional({ checkFalsy: true }),
+    .trim(),
 
   // Process request after validation and sanitization.
 
