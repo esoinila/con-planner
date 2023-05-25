@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//const { DateTime } = require("luxon");
-
-
+//const { DateTime } = require("luxon"); // no date object in this model
 
 const GameSchema = new Schema({
     con: { type: Schema.Types.ObjectId, ref: "Con", required: true }, 
@@ -24,14 +22,6 @@ GameSchema.virtual("url").get(function () {
   // We don't use an arrow function as we'll need the this object
   return `/con/game/${this._id}`;
 });
-
-/*
-GameSchema.virtual("date_formatted").get(function () {
-  
-  let string = DateTime.fromJSDate(this.con.date).toLocaleString(DateTime.DATE_MED);    
-  return string;
-});
-*/
 
 
 // Export model

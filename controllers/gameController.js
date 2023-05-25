@@ -186,12 +186,6 @@ exports.game_create_post = [
   }),
 ];
 
-/*
-exports.game_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game delete GET");
-});
-*/
-
 // Display Author delete form on GET.
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
