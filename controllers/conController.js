@@ -25,7 +25,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     ]);
 
     res.render("index", {
-        title: "Cafe Cons",
+        title: "Using Con-planner in 5 steps",
         con_count: numCons,
         game_count: numGames,
         con_list: allCons,
