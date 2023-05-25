@@ -204,7 +204,7 @@ exports.con_delete_post = asyncHandler(async (req, res, next) => {
     .populate("con")  
     .exec();
 
-  const matching_games = await Game.find({ con: req.body.gameid })
+  const matching_games = await Game.find({ con: req.body.conid })
     .populate("con")  
     .exec();
 
