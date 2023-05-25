@@ -1,8 +1,9 @@
 extends video_layout
 
 block content
-  h1 Title: #{game.title}
+  h1 Title: #{title}
 
+  p #[strong game title:] #{game.title}
   p #[strong max_players:] #{game.max_players}
   p #[strong min_players:] #{game.min_players}
   p #[strong description:] #{game.description}
@@ -11,5 +12,8 @@ block content
       a(href=val.url) #{val.game}: #{val.playername}
       if index < book.genre.length - 1
         |,
-  a(href='/con/booking/create') Sign up to a game
+  p
+    a(href='/con/booking/create') Sign up to a game
 
+  
+  a(href=game.url+'/delete') Delete this game with ID: #{game._id}.  

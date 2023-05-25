@@ -77,7 +77,7 @@ exports.game_detail = asyncHandler(async (req, res, next) => {
   }
 
   res.render("game_detail", {
-    title: game.title,
+    title: "Game Detail",
     game: game,
     game_instances: gameInstances,
     cons: cons,
@@ -186,29 +186,50 @@ exports.game_create_post = [
   }),
 ];
 
-
-
-// Display Genre update form on GET.
 /*
-exports.game_create_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create GET");
-}); */
-
-
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game delete GET");
+});
+*/
+
+// Display Author delete form on GET.
+exports.game_delete_get = asyncHandler(async (req, res, next) => {
+
+  const game = await Game.findById(req.params.id)
+  
+  const [matching_con, matching_bookings] = await Promise.all([
+    Con.findById(game.con).exec(),
+    Booking.find({con: game.con }).exec(),
+  ]);
+
+  game.con = matching_con;
+  game.bookings = matching_bookings;
+
+  if (game === null) {
+    // No results.
+    res.redirect("/con/games");
+  }
+
+  res.render("game_delete", {
+    title: "Delete Game",
+    game: game,
+  });
 });
 
+
+
+
+
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game delete POST");
 });
 
 exports.game_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game update GET");
 });
 
 exports.game_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
+  res.send("NOT IMPLEMENTED: Game update POST");
 });
 
 /*

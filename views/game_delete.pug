@@ -1,0 +1,19 @@
+extends video_layout
+
+block content
+  h1 #{title}
+  
+  p #[strong Game name:] #{game.title}
+
+  p #[strong Con Title:] #{game.con.title}
+
+  p #[strong Game Date:] #{game.con.date_formatted}
+
+
+
+  p Do you really want to delete this Game?
+
+  form(method='POST' action='')
+    div.form-group
+      input#gameid.form-control(type='hidden',name='gameid', required='true', value=game._id )
+      button.btn.btn-primary(type='submit') Delete
