@@ -2,14 +2,17 @@ extends video_layout
 
 block content
   h1= title
-  p This page is for organizing #[em Con]-participations.
+  p Con planner is a digital chalk board for managing #[em Con]-game bookings with nicknames.
   ol 
     li 
-      a(href="/con/con/create") Create a new con / event
-      
-       
-    li Create a new games for that con / event
-    li Let your players sign up to those games 
+      a(href="/con/con/create") Create a new con / event       
+    
+    li 
+      a(href="/con/game/create") Create a new games for that con / event
+    
+    li 
+      a(href="/con/booking/create") Let your players sign up to those games 
+    
     li Track game participitation from game lists as your game approaches
     li After the con is over, delete the con and all games and participitations will be deleted as well.
 

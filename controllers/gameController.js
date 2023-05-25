@@ -16,7 +16,7 @@ exports.index = asyncHandler(async (req, res, next) => {
   ]);
 
   res.render("index", {
-    title: "CON-PLANNER Home",
+    title: "Getting Started",
     game_count: numGames,
     booking_count: numBookings,
   });
