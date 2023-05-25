@@ -193,13 +193,54 @@ exports.con_delete_get = asyncHandler(async (req, res, next) => {
   });
 });
 
-
-
-
-
+/*
 exports.con_delete_post = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Con delete POST");
 });
+*/
+
+// Handle Con delete on POST.
+exports.con_delete_post = asyncHandler(async (req, res, next) => {
+  // Get details of game 
+  const con = await Con.findById(req.body.conid).populate("bookings").exec();
+
+  const matching_bookings = await Booking.find({ con: req.body.conid })
+    .populate("con")  
+    .exec();
+
+  const matching_games = await Game.find({ con: req.body.gameid })
+    .populate("con")  
+    .exec();
+
+
+  if (con === null) {
+    // Booking not found
+    res.render("con_delete", {
+      title: "Delete Con",
+      game: game,
+    });
+    return;
+  } else {
+
+    // Delete all bookings associated with this game
+    if (matching_bookings.length > 0) {
+      await Booking.deleteMany({ con: req.body.conid }).exec();
+    } 
+
+    // Delete all games associated with this game
+    if (matching_games.length > 0) {
+      await Game.deleteMany({ con: req.body.conid }).exec();
+    } 
+
+    // Delete object and redirect to the list of bookings.
+    await Con.findByIdAndRemove(req.body.conid);
+    res.redirect("/con/games");
+  }
+});
+
+
+
+
 
 exports.con_update_get = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Game create POST");

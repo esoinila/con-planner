@@ -211,7 +211,7 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 
-// Handle Author delete on POST.
+// Handle Game delete on POST.
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
   // Get details of game 
   const game = await Game.findById(req.body.gameid).populate("bookings").exec();
