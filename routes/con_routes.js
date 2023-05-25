@@ -9,7 +9,7 @@ const con_controller = require("../controllers/conController");
 /// GAME ROUTES ///
 
 // GET catalog home page.
-router.get("/", game_controller.index);
+router.get("/", con_controller.index);
 
 
 

@@ -5,6 +5,7 @@ const { body, validationResult } = require("express-validator");
 const asyncHandler = require("express-async-handler");
 
 // Summary of all games
+
 exports.index = asyncHandler(async (req, res, next) => {
   // Get details of games (in parallel)
   const [

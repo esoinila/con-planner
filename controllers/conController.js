@@ -6,25 +6,36 @@ const asyncHandler = require("express-async-handler");
 
 
 
-// Summary of all cons
+// LANDING PAGE
 exports.index = asyncHandler(async (req, res, next) => {
     // Get details of games (in parallel)
     const [
         numCons,
         numGames,
+        numBookings,
+        allCons,
     ] = await Promise.all([
         Con.countDocuments({}).exec(),
         Game.countDocuments({}).exec(),
+        Booking.countDocuments({}).exec(),
+        Con.find({})
+        .sort({ title: 1 })
+        .populate("games")
+        .exec(),
     ]);
 
     res.render("index", {
         title: "Cafe Cons",
         con_count: numCons,
         game_count: numGames,
+        con_list: allCons,
+        booking_count: numBookings,
+        
     });
 });
 
-// Display list of all cons and their games.
+
+// CON LIST.
 exports.con_list = asyncHandler(async (req, res, next) => {
     const allCons = await Con.find({})
         .sort({ title: 1 })
