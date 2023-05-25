@@ -12,6 +12,7 @@ const ConSchema = new Schema({
     time: { type: String, required: true },
     // let's add a list of players
     games: [{ type: Schema.Types.ObjectId, ref: "Game" }],
+    bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
     num_games: { type: Number, default: 0 },
     was_already: { type: Boolean, default: false }
 });

@@ -1,0 +1,49 @@
+extends video_layout
+
+block content
+  h1 #{title}
+  
+  p #[strong Con title:] #{con.title}
+
+  p #[strong Con description:] #{con.description}
+
+  p #[strong Con Date:] #{con.date_formatted}
+
+  p Do you really want to delete this Con? This will also delete all games and bookings for this con.
+
+  p Games to this con.
+
+    ul
+        each val in con.games
+            li
+                a(href=val.url) link to game
+                p #[strong Game Con:]#{val.con} 
+                p #[strong Game title:]#{val.title} 
+                p #[strong Game Max players:]#{val.max_players}
+                p #[strong Game Min players:]#{val.min_players}
+                p #[strong Game description:]#{val.description}
+                p #[strong Game start time:]#{val.start_time}
+                p #[strong Game end time:]#{val.end_time}
+        else
+            li There are no games for this con.
+
+
+  p Bookings to this con.
+
+    ul
+        each val in con.bookings
+            li
+                a(href=val.url) link to game
+                p #[strong Booking Con:]#{val.con} 
+                p #[strong Booking Game:]#{val.game} 
+                p #[strong Booking Playername:]#{val.playername}
+                p #[strong Booking date:]#{val.date_formatted}
+        else
+            li There are no bookings for this con.
+
+
+
+  form(method='POST' action='')
+    div.form-group
+      input#conid.form-control(type='hidden',name='conid', required='true', value=con._id )
+      button.btn.btn-primary(type='submit') Delete

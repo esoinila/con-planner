@@ -56,10 +56,7 @@ exports.con_list = asyncHandler(async (req, res, next) => {
         });
     });
 
-
-
     // Let's add the bookings for each game to bookings array
-
     const allBookings = await Booking.find({}).populate("game").exec();
 
     // let's add all the bookings for each game
@@ -172,10 +169,33 @@ exports.con_create_post = [
 ];
 
 
-
+// Display Con delete form on GET.
 exports.con_delete_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Con delete GET");
+
+  const con = await Con.findById(req.params.id)
+  
+  const [matching_games, matching_bookings] = await Promise.all([
+    Game.find({con : req.params.id}).populate("bookings").exec(),
+    Booking.find({con: req.params.id }).populate("game").populate("con").exec(),
+  ]);
+
+  con.games = matching_games;
+  con.bookings = matching_bookings;
+
+  if (con === null) {
+    // No results.
+    res.redirect("/con/cons");
+  }
+
+  res.render("con_delete", {
+    title: "Delete Con",
+    con: con,    
+  });
 });
+
+
+
+
 
 exports.con_delete_post = asyncHandler(async (req, res, next) => {
     res.send("NOT IMPLEMENTED: Game create POST");
