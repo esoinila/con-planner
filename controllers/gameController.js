@@ -8,15 +8,19 @@ const asyncHandler = require("express-async-handler");
 exports.index = asyncHandler(async (req, res, next) => {
   // Get details of games (in parallel)
   const [
+    numCons,
     numGames,
     numBookings,
   ] = await Promise.all([
+    Con.countDocuments({}).exec(),
     Game.countDocuments({}).exec(),
     Booking.countDocuments({}).exec(),
+
   ]);
 
   res.render("index", {
     title: "Getting Started",
+    con_count: numCons,
     game_count: numGames,
     booking_count: numBookings,
   });

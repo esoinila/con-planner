@@ -5,24 +5,23 @@ block content
   p Con planner is a digital chalk board for managing #[em Con]-game bookings with nicknames.
   ol 
     li 
-      a(href="/con/con/create") Create a new con / event       
+      a(href="/con/con/create") Create a new con / event 
+      | by selecting date and time and giving it a name and description.      
     
     li 
-      a(href="/con/game/create") Create a new games for that con / event
+      p Let your game masters <a href="/con/game/create">create a new games</a> for that con / event.
     
     li 
       a(href="/con/booking/create") Let your players sign up to those games 
     
-    li Track game participitation from game lists as your game approaches
-    li After the con is over, delete the con and all games and participitations will be deleted as well.
+    li Track game participitation from <a href="/con/games">game lists</a> as your game approaches. You can see nicknames and game filling statuses from the game list.
+    li After the con is over, <a href="/con/cons">delete</a> the con and all games and participitations will be deleted as well.
 
-  h1 Dynamic content
+  h1 Currently there are
 
-  p The library has the following record counts:
+  p The CON-Planner has the following record counts in the database:
 
   ul
-    li #[strong Books:] !{book_count}
-    li #[strong Copies:] !{book_instance_count}
-    li #[strong Copies available:] !{book_instance_available_count}
-    li #[strong Authors:] !{author_count}
-    li #[strong Genres:] !{genre_count}
+    li #[strong Cons:] !{con_count}
+    li #[strong Games:] !{game_count}
+    li #[strong Sign ups to a game:] !{booking_count}
