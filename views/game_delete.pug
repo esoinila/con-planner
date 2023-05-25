@@ -9,9 +9,18 @@ block content
 
   p #[strong Game Date:] #{game.con.date_formatted}
 
-
-
   p Do you really want to delete this Game? This will also delete all bookings for this game.
+
+    ul
+        each val in game.bookings
+            li
+                a(href=val.url) link to booking
+                p #[strong Playername:]#{val.playername} 
+                p #[strong Con:]#{val.con} 
+
+        else
+            li There are no bookings for this game.
+
 
   form(method='POST' action='')
     div.form-group

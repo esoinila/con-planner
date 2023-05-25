@@ -186,14 +186,14 @@ exports.game_create_post = [
   }),
 ];
 
-// Display Author delete form on GET.
+// Display Game delete form on GET.
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
   const game = await Game.findById(req.params.id)
   
   const [matching_con, matching_bookings] = await Promise.all([
     Con.findById(game.con).exec(),
-    Booking.find({con: game.con }).exec(),
+    Booking.find({game: req.params.id }).exec(),
   ]);
 
   game.con = matching_con;
@@ -206,17 +206,39 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("game_delete", {
     title: "Delete Game",
-    game: game,
+    game: game,    
   });
 });
 
 
-
-
-
+// Handle Author delete on POST.
 exports.game_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game delete POST");
+  // Get details of game 
+  const game = await Game.findById(req.body.gameid).populate("bookings").exec();
+
+  const matching_bookings = await Booking.find({ game: req.body.gameid })
+    .populate("con")  
+    .exec();
+
+  if (game === null) {
+    // Booking not found
+    res.render("game_delete", {
+      title: "Delete Game",
+      game: game,
+    });
+    return;
+  } else {
+
+    // Delete all bookings associated with this game
+    if (matching_bookings.length > 0) {
+      await Booking.deleteMany({ game: req.body.gameid }).exec();
+    } 
+    // Delete object and redirect to the list of bookings.
+    await Game.findByIdAndRemove(req.body.gameid);
+    res.redirect("/con/games");
+  }
 });
+
 
 exports.game_update_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game update GET");
