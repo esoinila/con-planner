@@ -16,9 +16,15 @@ exports.booking_list = asyncHandler(async (req, res, next) => {
 
 
 exports.booking_detail = asyncHandler(async (req, res, next) => {
-  const booking = await Booking.findById(req.params.id)
-    .populate("game")
-    .exec();
+  const booking = await Booking.findById(req.params.id).populate("game").exec();
+  
+  const [matching_con, matching_game] = await Promise.all([
+    Con.findById(booking.con).exec(),
+    Game.findById(booking.game).exec(),
+  ]);
+
+  booking.con = matching_con;
+  booking.game = matching_game;
 
   if (booking === null) {
     // No results.
@@ -158,23 +164,63 @@ exports.booking_create_post = [
   }),
 ];
 
-
-
-
+// Display Author delete form on GET.
 exports.booking_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Booking create POST");
+
+  const booking = await Booking.findById(req.params.id)
+  
+  const [matching_con, matching_game] = await Promise.all([
+    Con.findById(booking.con).exec(),
+    Game.findById(booking.game).exec(),
+  ]);
+
+  booking.con = matching_con;
+  booking.game = matching_game;
+
+  if (booking === null) {
+    // No results.
+    res.redirect("/con/bookings");
+  }
+
+  res.render("booking_delete", {
+    title: "Delete Booking",
+    booking: booking,
+  });
 });
 
+
+// Handle Author delete on POST.
 exports.booking_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Booking create POST");
+  // Get details of booking 
+  const [booking] = await Promise.all([
+    Booking.findById(req.body.bookingid).exec(),
+  ]);
+
+  if (booking === null) {
+    // Booking not found
+    res.render("booking_delete", {
+      title: "Delete Booking",
+      booking: booking,
+    });
+    return;
+  } else {
+    // Delete object and redirect to the list of bookings.
+    await Booking.findByIdAndRemove(req.body.bookingid);
+    res.redirect("/con/bookings");
+  }
 });
+
+
+
+
+
 
 exports.booking_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking update GET");
 });
 
 exports.booking_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Booking create POST");
+  res.send("NOT IMPLEMENTED: Booking update POST");
 });
 
 

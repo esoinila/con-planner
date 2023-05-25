@@ -1,0 +1,21 @@
+extends video_layout
+
+block content
+  h1 #{title}
+  
+  p #[strong Player name:] #{booking.playername}
+
+  p #[strong Con Title:] #{booking.con.title}
+
+  p #[strong Game Title:] #{booking.game.title}
+
+  p #[strong Con Date:] #{booking.con.date_formatted}
+
+
+
+  p Do you really want to delete this Booking?
+
+  form(method='POST' action='')
+    div.form-group
+      input#bookingid.form-control(type='hidden',name='bookingid', required='true', value=booking._id )
+      button.btn.btn-primary(type='submit') Delete
