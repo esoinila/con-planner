@@ -163,7 +163,7 @@ exports.con_create_post = [
 
 
 exports.con_delete_get = asyncHandler(async (req, res, next) => {
-    res.send("NOT IMPLEMENTED: Game create POST");
+    res.send("NOT IMPLEMENTED: Con delete GET");
 });
 
 exports.con_delete_post = asyncHandler(async (req, res, next) => {
