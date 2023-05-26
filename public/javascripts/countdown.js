@@ -6,25 +6,31 @@ const countdown = (dateTextId, countdownTextId) => {
     
     const dateTextElement = document.getElementById(dateTextId);
     const countDownTextElement = document.getElementById(countdownTextId);
-    //const countDownDate = new Date(date).getTime();
     
     if(dateTextElement === null || countDownTextElement === null) 
     {
         return;
     }
 
-    const countDownDate = new Date(dateTextElement.innerHTML).getTime();
+    //console.log("Found this for target time: " + dateTextElement.innerHTML);
+    //console.log("Found this for text output: " + countDownTextElement.innerHTML);
+
+    const countDownDate = new Date(Date.parse(dateTextElement.innerHTML)).getTime();
+    
+    //console.log("Countdown date: " + countDownDate.toString());
 
     const x = setInterval(
         function () {
             const now = new Date().getTime();
             const distance = countDownDate - now;
+            //console.log("Distance: " + distance.toString());
+
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            //const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // hours
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // hours
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); // minutes
             const seconds = Math.floor((distance % (1000 * 60)) / 1000); // seconds
-            countDownTextElement.innerHTML.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+            countDownTextElement.innerHTML = "<strong>countdown:</strong> " + days + "d " + hours 
+                + "h " + minutes + "m " + seconds + "s ";
             
             if (distance < 0) {
                 clearInterval(x);
