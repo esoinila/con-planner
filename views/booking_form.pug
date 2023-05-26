@@ -24,7 +24,12 @@ block content
 
     div.form-group
       label(for='playername') Player name:
-      input#game.form-control(type='text' placeholder='playername here' name='playername' required='true' value=(undefined===playername ? '' : booking.playername))
+      input#playername.form-control(type='text' placeholder='playername here' name='playername' required='true' value=(undefined===booking ? '' : booking.playername))
+
+    div.form-group
+      label(for='deletepassword') Optional delete password for signup deletion:
+      input#deletepassword.form-control(type='text' placeholder='If you get sick etc good reason' name='deletepassword' required='false' value=(undefined===booking ? '' : booking.deletepassword))
+
 
     button.btn.btn-primary(type='submit') Submit
 

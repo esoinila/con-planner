@@ -11,6 +11,8 @@ block content
 
   p #[strong Con Date:] #{booking.con.date_formatted}
 
+  //p #[strong Delete Password:] #{booking.deletepassword}
+
 
 
   p Do you really want to delete this Booking?
@@ -18,4 +20,14 @@ block content
   form(method='POST' action='')
     div.form-group
       input#bookingid.form-control(type='hidden',name='bookingid', required='true', value=booking._id )
+    div.form-group
+      label(for='deletepassword') Delete password for signup deletion:
+      input#deletepassword.form-control(type='text' placeholder='defaults to empty string' name='deletepassword' required='true' )
+
+
       button.btn.btn-primary(type='submit') Delete
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

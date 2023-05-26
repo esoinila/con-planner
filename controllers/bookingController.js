@@ -17,7 +17,7 @@ exports.booking_list = asyncHandler(async (req, res, next) => {
 
 exports.booking_detail = asyncHandler(async (req, res, next) => {
   const booking = await Booking.findById(req.params.id).populate("game").exec();
-  
+
   const [matching_con, matching_game] = await Promise.all([
     Con.findById(booking.con).exec(),
     Game.findById(booking.game).exec(),
@@ -85,6 +85,9 @@ exports.booking_create_post = [
     .optional({ checkFalsy: true })
     .isISO8601()
     .toDate(),
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
 
   // Process request after validation and sanitization.
   asyncHandler(async (req, res, next) => {
@@ -102,13 +105,14 @@ exports.booking_create_post = [
 
     // Find the game so we can read the con
     const game = await Game.findById(req.body.game)
-    .populate("con")
-    .exec();
+      .populate("con")
+      .exec();
 
-      
+
     const booking = new Booking({
       game: req.body.game,
       playername: req.body.playername,
+      deletepassword: req.body.deletepassword,
       date: req.body.date,
       con: game.con
     });
@@ -168,7 +172,7 @@ exports.booking_create_post = [
 exports.booking_delete_get = asyncHandler(async (req, res, next) => {
 
   const booking = await Booking.findById(req.params.id)
-  
+
   const [matching_con, matching_game] = await Promise.all([
     Con.findById(booking.con).exec(),
     Game.findById(booking.game).exec(),
@@ -189,26 +193,44 @@ exports.booking_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 
-// Handle Author delete on POST.
-exports.booking_delete_post = asyncHandler(async (req, res, next) => {
-  // Get details of booking 
-  const [booking] = await Promise.all([
-    Booking.findById(req.body.bookingid).exec(),
-  ]);
+exports.booking_delete_post = [
+  body("deletepassword", "problem with your password")
+  .trim()
+  .escape(),  
+  // Handle Author delete on POST.
+  asyncHandler(async (req, res, next) => {
+    // Get details of booking 
+    const [booking] = await Promise.all([
+      Booking.findById(req.body.bookingid).exec(),
+    ]);
 
-  if (booking === null) {
-    // Booking not found
-    res.render("booking_delete", {
-      title: "Delete Booking",
-      booking: booking,
-    });
-    return;
-  } else {
-    // Delete object and redirect to the list of bookings.
-    await Booking.findByIdAndRemove(req.body.bookingid);
-    res.redirect("/con/bookings");
-  }
-});
+    if (req.body.deletepassword != booking.deletepassword) {
+      let errors = [];
+      const err_str = "Password " + req.body.deletepassword + " does not match your deletepassword.";
+      errors.push({ msg: err_str });
+
+      res.render("booking_delete", {
+        title: "Delete Booking",
+        booking: booking,
+        errors: errors,
+      });
+      return;
+    }
+
+    if (booking === null) {
+      // Booking not found
+      res.render("booking_delete", {
+        title: "Delete Booking",
+        booking: booking,
+      });
+      return;
+    } else {
+      // Delete object and redirect to the list of bookings.
+      await Booking.findByIdAndRemove(req.body.bookingid);
+      res.redirect("/con/bookings");
+    }
+  })
+];
 
 
 
