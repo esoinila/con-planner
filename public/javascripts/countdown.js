@@ -2,8 +2,9 @@
 // I will use this time to change a text on the webpage and update it to create a countdown effect.
 // display the results in days, hours, minutes and seconds.
 
-const countdown = (date, text_id_in_dom) => {
-    const countDownDate = new Date(date).getTime();
+const countdown = (countDownDate, text_id_in_dom) => {
+    
+    //const countDownDate = new Date(date).getTime();
 
     const x = setInterval(
         function () {
