@@ -41,6 +41,9 @@ block content
       label(for='end_time') End time:
       input#end_time.form-control(type='time', placeholder='end time' name='end_time' required='true' value=(undefined===game ? '21:00' : game.end_time) )
 
+    div.form-group
+      label(for='deletepassword') Delete password for game deletion:
+      input#deletepassword.form-control(type='text' placeholder='If you get sick etc good reason' name='deletepassword' required='false' value=(undefined===game ? 'swordfish' : game.deletepassword))
 
 
     button.btn.btn-primary(type='submit') Submit

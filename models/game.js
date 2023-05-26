@@ -11,6 +11,7 @@ const GameSchema = new Schema({
     // let's add start-time and end-time
     start_time: { type: String, required: true },
     end_time: { type: String, required: true },
+    deletepassword: { type: String, required: true, default: "" },
     // let's add a list of players
     bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
     num_bookings: { type: Number, default: 0 },

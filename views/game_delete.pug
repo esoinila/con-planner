@@ -9,6 +9,9 @@ block content
 
   p #[strong Game Date:] #{game.con.date_formatted}
 
+  p #[strong Delete Password:] #{game.deletepassword}
+
+
   p Do you really want to delete this Game? This will also delete all bookings for this game.
 
     ul
@@ -25,4 +28,16 @@ block content
   form(method='POST' action='')
     div.form-group
       input#gameid.form-control(type='hidden',name='gameid', required='true', value=game._id )
+
+    div.form-group
+      label(for='deletepassword') Delete password for signup deletion:
+      input#deletepassword.form-control(type='text' placeholder='you created this when you signed to the game' name='deletepassword' required='true' )
+
+
+
       button.btn.btn-primary(type='submit') Delete
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg

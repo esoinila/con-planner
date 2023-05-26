@@ -133,6 +133,9 @@ exports.game_create_post = [
     .trim(),
   body("end_time", "Invalid end time")
     .trim(),
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
 
   // Process request after validation and sanitization.
 
@@ -149,6 +152,7 @@ exports.game_create_post = [
       description: req.body.description,
       start_time: req.body.start_time,
       end_time: req.body.end_time,
+      deletepassword: req.body.deletepassword,
     });
 
     if (!errors.isEmpty()) {
@@ -182,10 +186,10 @@ exports.game_create_post = [
 exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
   const game = await Game.findById(req.params.id)
-  
+
   const [matching_con, matching_bookings] = await Promise.all([
     Con.findById(game.con).exec(),
-    Booking.find({game: req.params.id }).exec(),
+    Booking.find({ game: req.params.id }).exec(),
   ]);
 
   game.con = matching_con;
@@ -198,38 +202,59 @@ exports.game_delete_get = asyncHandler(async (req, res, next) => {
 
   res.render("game_delete", {
     title: "Delete Game",
-    game: game,    
+    game: game,
   });
 });
 
 
-// Handle Game delete on POST.
-exports.game_delete_post = asyncHandler(async (req, res, next) => {
-  // Get details of game 
-  const game = await Game.findById(req.body.gameid).populate("bookings").exec();
+exports.game_delete_post = [
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
 
-  const matching_bookings = await Booking.find({ game: req.body.gameid })
-    .populate("con")  
-    .exec();
+  // Handle Game delete on POST.
+  asyncHandler(async (req, res, next) => {
+    // Get details of game 
+    const game = await Game.findById(req.body.gameid).populate("bookings").exec();
 
-  if (game === null) {
-    // Booking not found
-    res.render("game_delete", {
-      title: "Delete Game",
-      game: game,
-    });
-    return;
-  } else {
+    const matching_bookings = await Booking.find({ game: req.body.gameid })
+      .populate("con")
+      .exec();
 
-    // Delete all bookings associated with this game
-    if (matching_bookings.length > 0) {
-      await Booking.deleteMany({ game: req.body.gameid }).exec();
-    } 
-    // Delete object and redirect to the list of bookings.
-    await Game.findByIdAndRemove(req.body.gameid);
-    res.redirect("/con/games");
-  }
-});
+      if (req.body.deletepassword != game.deletepassword) {
+        let errors = [];
+        const err_str = "Password " + req.body.deletepassword + " does not match your deletepassword.";
+        errors.push({ msg: err_str });
+  
+        res.render("game_delete", {
+          title: "Delete Game",
+          game: game,
+          errors: errors,
+        });
+        return;
+      }
+  
+
+
+    if (game === null) {
+      // Game not found
+      res.render("game_delete", {
+        title: "Delete Game",
+        game: game,
+      });
+      return;
+    } else {
+
+      // Delete all bookings associated with this game
+      if (matching_bookings.length > 0) {
+        await Booking.deleteMany({ game: req.body.gameid }).exec();
+      }
+      // Delete object and redirect to the list of bookings.
+      await Game.findByIdAndRemove(req.body.gameid);
+      res.redirect("/con/games");
+    }
+  })
+];
 
 
 exports.game_update_get = asyncHandler(async (req, res, next) => {
