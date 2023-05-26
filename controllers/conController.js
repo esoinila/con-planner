@@ -84,13 +84,20 @@ exports.con_detail = asyncHandler(async (req, res, next) => {
     Booking.find({ con: req.params.id }).populate("game").exec(),
   ]);
 
+  const startingTimes = [];
+
   games.forEach((game) => {
     bookings.forEach((booking) => {
       if (booking.game._id.toString() === game._id.toString()) {
         game.bookings.push(booking);
+        startingTimes.push(game.start_time);
       }
     });
   });
+
+  // get the earliest time from startingTimes for countdown clock
+  const lowestStartTime = Math.min.apply(Math, startingTimes);
+  con.earliest_start_hour = lowestStartTime;
 
 
   if (con === null) {
@@ -99,6 +106,9 @@ exports.con_detail = asyncHandler(async (req, res, next) => {
     err.status = 404;
     return next(err);
   }
+
+
+
 
   res.render("new_con_detail", {
     title: con.title,

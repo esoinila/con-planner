@@ -4,13 +4,15 @@ block content
 
   h1 Title: #{con.title}
 
-  <p id="countdowntime" hidden>#{con.date.toISOString()}</p> 
+  <p id="countdowntime" hidden>#{con.date.toISOString()}</p>
+  <p id="earlieststarttime" hidden>#{con.earliest_start_time}</p>
   p#countdowntext #[strong countdown:] countdown_time_placeholder
 
 
   p #[strong description:] #{con.description}
   p #[strong date:] #{con.date}
   p #[strong time:] #{con.time}
+  p #[strong delete password:] #{con.deletepassword}
   a(href=con.url+'/delete') Delete this con
    
   

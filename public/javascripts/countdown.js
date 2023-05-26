@@ -1,14 +1,20 @@
+
+function parseTimeToMilliSeconds(time) {
+    var parts = time.split(':');
+    return (+parts[0]) * 60 * 60 + (+parts[1]) * 60 * 1000;
+}
+
 // countdown timer to a date and time I specify as an argument. 
 // I will use this time to change a text on the webpage and update it to create a countdown effect.
 // display the results in days, hours, minutes and seconds.
 
-const countdown = (dateTextId, countdownTextId) => {
-    
+const countdown = (dateTextId, earliestStartTime, countdownTextId) => {
+
     const dateTextElement = document.getElementById(dateTextId);
+    const earliestStartTimeMilliseconds = document.getElementById(earliestStartTime);
     const countDownTextElement = document.getElementById(countdownTextId);
-    
-    if(dateTextElement === null || countDownTextElement === null) 
-    {
+
+    if (dateTextElement === null || countDownTextElement === null || earliestStartTimeMilliseconds === null) {
         return;
     }
 
@@ -16,8 +22,8 @@ const countdown = (dateTextId, countdownTextId) => {
     //console.log("Found this for text output: " + countDownTextElement.innerHTML);
 
     const countDownDate = new Date(Date.parse(dateTextElement.innerHTML));
-    const conStartHour = 15;
-    countDownDate.setTime(date.getTime() + (conStartHour * 60 * 60 * 1000) ); // add 15 hours to the date
+    const millisecondsIntoDay = parseTimeToMilliSeconds(earliestStartTimeMilliseconds.innerHTML); // convert to hours);
+    countDownDate.setTime(date.getTime() + millisecondsIntoDay); // add 15 hours to the date
     countDownTime = countDownDate.getTime();
 
     //console.log("Countdown date: " + countDownDate.toString());
@@ -32,9 +38,9 @@ const countdown = (dateTextId, countdownTextId) => {
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // hours
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)); // minutes
             const seconds = Math.floor((distance % (1000 * 60)) / 1000); // seconds
-            countDownTextElement.innerHTML = "<strong>countdown:</strong> " + days + "d " + hours 
+            countDownTextElement.innerHTML = "<strong>countdown:</strong> " + days + "d " + hours
                 + "h " + minutes + "m " + seconds + "s ";
-            
+
             if (distance < 0) {
                 clearInterval(x);
                 countDownTextElement.innerHTML = "EXPIRED";
@@ -45,7 +51,7 @@ const countdown = (dateTextId, countdownTextId) => {
 
 // create Date that is 5 days from now
 const date = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
-countdown("countdowntime", "countdowntext");
+countdown("countdowntime", "earlieststarttime", "countdowntext");
 
 //countdown(con.date, "countdowntext");
 // countdown("Jan 5, 2021 15:37:25", "demo"); // test
