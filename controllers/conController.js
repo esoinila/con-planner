@@ -143,6 +143,11 @@ exports.con_create_post = [
     .trim()
   //.matches(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
   ,
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
+
+
 
   // Process request after validation and sanitization.
 
@@ -156,6 +161,7 @@ exports.con_create_post = [
       description: req.body.description,
       date: req.body.date,
       time: req.body.time,
+      deletepassword: req.body.deletepassword,
     });
 
     if (!errors.isEmpty()) {
@@ -208,43 +214,63 @@ exports.con_delete_get = asyncHandler(async (req, res, next) => {
 
 
 // Handle Con delete on POST.
-exports.con_delete_post = asyncHandler(async (req, res, next) => {
-  // Get details of game 
-  const con = await Con.findById(req.body.conid).populate("bookings").exec();
+exports.con_delete_post = [
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
 
-  const matching_bookings = await Booking.find({ con: req.body.conid })
-    .populate("con")
-    .exec();
+  asyncHandler(async (req, res, next) => {
+    // Get details of game 
+    const con = await Con.findById(req.body.conid).populate("bookings").exec();
 
-  const matching_games = await Game.find({ con: req.body.conid })
-    .populate("con")
-    .exec();
+    const matching_bookings = await Booking.find({ con: req.body.conid })
+      .populate("con")
+      .exec();
 
+    const matching_games = await Game.find({ con: req.body.conid })
+      .populate("con")
+      .exec();
 
-  if (con === null) {
-    // Booking not found
-    res.render("con_delete", {
-      title: "Delete Con",
-      game: game,
-    });
-    return;
-  } else {
+    if (req.body.deletepassword != con.deletepassword) {
+      let errors = [];
+      const err_str = "Password " + req.body.deletepassword + " does not match your deletepassword.";
+      errors.push({ msg: err_str });
 
-    // Delete all bookings associated with this game
-    if (matching_bookings.length > 0) {
-      await Booking.deleteMany({ con: req.body.conid }).exec();
+      res.render("con_delete", {
+        title: "Delete Con",
+        con: con,
+        errors: errors,
+      });
+      return;
     }
 
-    // Delete all games associated with this game
-    if (matching_games.length > 0) {
-      await Game.deleteMany({ con: req.body.conid }).exec();
-    }
 
-    // Delete object and redirect to the list of bookings.
-    await Con.findByIdAndRemove(req.body.conid);
-    res.redirect("/con/cons");
-  }
-});
+
+    if (con === null) {
+      // Booking not found
+      res.render("con_delete", {
+        title: "Delete Con",
+        game: game,
+      });
+      return;
+    } else {
+
+      // Delete all bookings associated with this game
+      if (matching_bookings.length > 0) {
+        await Booking.deleteMany({ con: req.body.conid }).exec();
+      }
+
+      // Delete all games associated with this game
+      if (matching_games.length > 0) {
+        await Game.deleteMany({ con: req.body.conid }).exec();
+      }
+
+      // Delete object and redirect to the list of bookings.
+      await Con.findByIdAndRemove(req.body.conid);
+      res.redirect("/con/cons");
+    }
+  })
+]
 
 
 

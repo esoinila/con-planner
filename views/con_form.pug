@@ -23,6 +23,11 @@ block content
     div.form-group
       label(for='time') Time:
       input#time.form-control(type='time', placeholder='time' name='time' required='true' value=(undefined===con ? '15:00' : con.time) )
+    
+    div.form-group
+      label(for='deletepassword') Delete password for game deletion:
+      input#deletepassword.form-control(type='text' placeholder='If you get sick etc good reason' name='deletepassword' required='false' value=(undefined===con ? 'swordfish' : con.deletepassword))
+
 
 
     button.btn.btn-primary(type='submit') Submit

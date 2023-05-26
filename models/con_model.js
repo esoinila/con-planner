@@ -10,6 +10,7 @@ const ConSchema = new Schema({
     date: { type: Date, required: true },
 
     time: { type: String, required: true },
+    deletepassword: { type: String, required: true, default: "" },
     // let's add a list of players
     games: [{ type: Schema.Types.ObjectId, ref: "Game" }],
     bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],

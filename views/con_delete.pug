@@ -9,6 +9,9 @@ block content
 
   p #[strong Con Date:] #{con.date_formatted}
 
+  p #[strong Delete Password:] #{con.deletepassword}
+
+
   p Do you really want to delete this Con? This will also delete all games and bookings for this con.
 
   p Games to this con.
@@ -46,4 +49,18 @@ block content
   form(method='POST' action='')
     div.form-group
       input#conid.form-control(type='hidden',name='conid', required='true', value=con._id )
+
+    div.form-group
+      label(for='deletepassword') Delete password for signup deletion:
+
+      input#deletepassword.form-control(type='text' placeholder='you created this when you created the con' name='deletepassword' required='true' )
+
+    div.form-group
+
       button.btn.btn-primary(type='submit') Delete
+
+  if errors
+    ul
+      for error in errors
+        li!= error.msg
+
