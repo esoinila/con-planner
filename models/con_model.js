@@ -16,7 +16,6 @@ const ConSchema = new Schema({
     bookings: [{ type: Schema.Types.ObjectId, ref: "Booking" }],
     num_games: { type: Number, default: 0 },
     was_already: { type: Boolean, default: false },
-    earliest_start_time: { type: String, required: false, default: "15:00" },
 });
 
 // Virtual for book's URL

@@ -72,10 +72,18 @@ exports.con_list = asyncHandler(async (req, res, next) => {
 });
 
 
-
-
 // Display detail page for a specific con.
 exports.con_detail = asyncHandler(async (req, res, next) => {
+
+  // Utility to convert HH:MM to milliseconds
+  const HHMMtoMilliseconds = (hm) => {
+    var a = hm.split(':');
+    // minutes are worth 60 seconds. Hours are worth 60 minutes.
+    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60;
+    return seconds * 1000;
+  }
+
+
   // Get details of game
   const [con, games, bookings] = await Promise.all([
     Con.findById(req.params.id).populate("games").exec(),
@@ -91,14 +99,11 @@ exports.con_detail = asyncHandler(async (req, res, next) => {
       if (booking.game._id.toString() === game._id.toString()) {
         game.bookings.push(booking);
         startingTimes.push(game.start_time);
+        //console.log("game.start_time: " + game.start_time);
+        //console.log("HHMMtoMilliseconds(game.start_time): " + HHMMtoMilliseconds(game.start_time));
       }
     });
   });
-
-  // get the earliest time from startingTimes for countdown clock
-  const lowestStartTime = Math.min.apply(Math, startingTimes);
-  con.earliest_start_hour = lowestStartTime;
-
 
   if (con === null) {
     // No results.
@@ -281,8 +286,6 @@ exports.con_delete_post = [
     }
   })
 ]
-
-
 
 
 
