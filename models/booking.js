@@ -6,6 +6,7 @@ const BookingSchema = new Schema({
   con: { type: Schema.Types.ObjectId, ref: "Con", required: true }, 
   game: { type: Schema.Types.ObjectId, ref: "Game", required: true }, // reference to the associated game
   playername: { type: String, required: true },
+  deletepassword: { type: String, default: "" },
   date: { type: Date, default: Date.now }
 });
 
