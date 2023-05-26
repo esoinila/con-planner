@@ -15,14 +15,17 @@ const countdown = (dateTextId, countdownTextId) => {
     //console.log("Found this for target time: " + dateTextElement.innerHTML);
     //console.log("Found this for text output: " + countDownTextElement.innerHTML);
 
-    const countDownDate = new Date(Date.parse(dateTextElement.innerHTML)).getTime();
-    
+    const countDownDate = new Date(Date.parse(dateTextElement.innerHTML));
+    const conStartHour = 15;
+    countDownDate.setTime(date.getTime() + (conStartHour * 60 * 60 * 1000) ); // add 15 hours to the date
+    countDownTime = countDownDate.getTime();
+
     //console.log("Countdown date: " + countDownDate.toString());
 
     const x = setInterval(
         function () {
             const now = new Date().getTime();
-            const distance = countDownDate - now;
+            const distance = countDownTime - now;
             //console.log("Distance: " + distance.toString());
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
