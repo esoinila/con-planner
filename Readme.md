@@ -18,7 +18,7 @@ Player nicknames are used to sign up to games. This allows the user to avoid giv
 # The app uses Atlas Mongo DB
 The connection string is set in the environment variable MONGODB_URI. The demosite is hosted by Render.com and uses Atlas Mongo DB from whitelisted Reader addresses.
 
-# Setting up your own instance
+# Setting up your own Render hosted NodeJS-instance
 1. Fork your own repo.
 2. Create a new project in Render.com.
 3. Create Atlas Mongo DB account.
