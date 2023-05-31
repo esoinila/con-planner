@@ -2,7 +2,7 @@
 
 ![alt text](readme_image.png)
 
-Con-Planner is a web application that allows users to plan their convention experience. 
+Con-Planner is a web application that allows organizers to let game masters add their games and users to sign up to those games. Maximum number of signups can be set for each game. There can be multiple conventions. 
 
 # Entities
 1. Convention (Con) - A convention that has multiple games. 
