@@ -112,9 +112,6 @@ exports.con_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-
-
-
   res.render("new_con_detail", {
     title: con.title,
     con: con,
