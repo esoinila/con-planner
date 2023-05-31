@@ -233,10 +233,6 @@ exports.booking_delete_post = [
 ];
 
 
-
-
-
-
 exports.booking_update_get = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Booking update GET");
 });
