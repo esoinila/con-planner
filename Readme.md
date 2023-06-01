@@ -47,3 +47,11 @@ The connection string is set in the environment variable MONGODB_URI. The demosi
 2. Install the dependencies.
 3. Set the environment variable MONGODB_URI to the connection string of your Atlas Mongo DB instance.
 4. Run the app with node.
+
+## Issues and todos
+
+* Salt the resource level delete-passwords
+* Add tests that cover the main MVP features
+* Add Discord bot to notify game masters of signups
+* Add Discord bot to notify users of new games
+* Add install instructions to more NodeJS / MongoDB free-tier platforms
