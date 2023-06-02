@@ -313,38 +313,6 @@ exports.con_update_get = asyncHandler(async (req, res, next) => {
 
 });
 
-exports.book_update_get = asyncHandler(async (req, res, next) => {
-  // Get book, authors and genres for form.
-  const [book, allAuthors, allGenres] = await Promise.all([
-    Book.findById(req.params.id).populate("author").populate("genre").exec(),
-    Author.find().exec(),
-    Genre.find().exec(),
-  ]);
-
-  if (book === null) {
-    // No results.
-    const err = new Error("Book not found");
-    err.status = 404;
-    return next(err);
-  }
-
-  // Mark our selected genres as checked.
-  for (const genre of allGenres) {
-    for (const book_g of book.genre) {
-      if (genre._id.toString() === book_g._id.toString()) {
-        genre.checked = "true";
-      }
-    }
-  }
-
-  res.render("book_form", {
-    title: "Update Book",
-    authors: allAuthors,
-    genres: allGenres,
-    book: book,
-  });
-});
-
 
 /*
  exports.con_update_post = asyncHandler(async (req, res, next) => {

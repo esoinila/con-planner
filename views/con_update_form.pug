@@ -9,12 +9,12 @@ block content
   h1= page_title
   <p hidden id="valueForTextField">#{con.description}</p>
 
-  p #[strong title:] #{con.title}
-  p #[strong description:] #{con.description}
-  p #[strong date:] #{con.date}
-  p #[strong formatted date:] #{formattedDate}
-  p #[strong time:] #{con.time}
-  p #[strong delete password:] #{con.deletepassword}
+  //p #[strong title:] #{con.title}
+  //p #[strong description:] #{con.description}
+  //p #[strong date:] #{con.date}
+  //p #[strong formatted date:] #{formattedDate}
+  //p #[strong time:] #{con.time}
+  //p #[strong delete password:] #{con.deletepassword}
 
   form(method='POST' action='')
 
@@ -37,8 +37,8 @@ block content
       input#time.form-control(type='time', placeholder='time' name='time' required='true' value=(undefined===con ? '15:00' : con.time) )
     
     div.form-group
-      label(for='deletepassword') Delete password for game deletion:
-      input#deletepassword.form-control(type='text' placeholder='If you get sick etc good reason' name='deletepassword' required='false' value=(undefined===con ? 'swordfish' : con.deletepassword))
+      label(for='deletepassword') Authenticate changes with delete password:
+      input#deletepassword.form-control(type='text' placeholder='If you get sick etc good reason' name='deletepassword' required='false' value=('swordfish'))
 
 
 
