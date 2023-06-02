@@ -19,7 +19,7 @@ const countdown = (dateTextId, earliestStartTime, countdownTextId) => {
     }
 
     console.log("Found this for target time: " + dateTextElement.innerHTML);
-    console.log("Found this for text output: " + countDownTextElement.innerHTML);
+    //console.log("Found this for text output: " + countDownTextElement.innerHTML);
 
     const countDownDate = new Date(Date.parse(dateTextElement.innerHTML));
     const millisecondsIntoDay = parseTimeToMilliSeconds(earliestStartTimeMilliseconds.innerHTML); // convert to hours);
@@ -43,19 +43,12 @@ const countdown = (dateTextId, earliestStartTime, countdownTextId) => {
 
             if (distance < 0) {
                 clearInterval(x);
-                countDownTextElement.innerHTML = "EXPIRED";
+                countDownTextElement.innerHTML = "<strong>countdown:</strong> " + "ended " + Math.abs(days) + " days " + " ago  ";
             }
         }, 1000);
 
 }
 
-// create Date that is 5 days from now
-//const date = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
 countdown("countdowntime", "earlieststarttime", "countdowntext");
 
-//countdown(con.date, "countdowntext");
-// countdown("Jan 5, 2021 15:37:25", "demo"); // test
-// countdown("Jan 5, 2021 15:37:25", "demo"); // test
-// countdown("Jan 5, 2021 15:37:25", "demo"); // test
-// countdown("Jan 5, 2021 15:37:25", "demo"); // test
 
