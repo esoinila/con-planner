@@ -15,10 +15,9 @@ console.log("unescaped: " + unescapedString); // This is an unescaped string &#x
 function fillTextArea() {
     var textArea = document.getElementById("description");
     var textAreaValue = document.getElementById("valueForTextField").innerHTML;
-    //console.log(textAreaValue);
     let unescapedString = unescapeHTML(textAreaValue);
     console.log("Un-escaped string for form field: " + unescapedString);
-    textArea.value = unescapedString;
+    textArea.innerHTML = unescapedString;
 }   
 
 fillTextArea();
