@@ -348,6 +348,18 @@ exports.con_update_post = [
     // Extract the validation errors from a request.
     const errors = validationResult(req);
 
+    // Get details of con for password-checking 
+    const currentCon = await Con.findById(req.params.id).populate("games").exec();
+
+    let passwordError = "";
+
+    // check the delete-password is correct
+    if (req.body.deletepassword != currentCon.deletepassword) {
+      
+      const err_str = "Password " + req.body.deletepassword + " does not match your deletepassword.";
+      passwordError = err_str;
+    }
+
     // Create a Book object with escaped and trimmed data.
     const con = new Con({
       title: req.body.title,
@@ -358,7 +370,8 @@ exports.con_update_post = [
       _id: req.params.id, //This is required, or a new ID will be assigned!
     });
 
-    if (!errors.isEmpty()) {
+  
+    if (!errors.isEmpty() || passwordError.length > 0 || req.body.deletepassword != currentCon.deletepassword) {
       // There are errors. Render form again with sanitized values/error messages.
 
       const allCons = await Con.find({})
@@ -373,6 +386,7 @@ exports.con_update_post = [
         con: con,
         formattedDate: formattedDate,
         errors: errors.array(),
+        passwordError: passwordError,
       });
       return;
     } else {
