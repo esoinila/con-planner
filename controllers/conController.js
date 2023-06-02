@@ -159,8 +159,6 @@ exports.con_create_post = [
     .trim()
     .escape(),
 
-
-
   // Process request after validation and sanitization.
 
   asyncHandler(async (req, res, next) => {
@@ -284,20 +282,48 @@ exports.con_delete_post = [
   })
 ]
 
+/*
+exports.con_update_get = asyncHandler(async (req, res, next) => {
+  res.send("NOT IMPLEMENTED: Con Update Get");
+});
+*/
 
 
 exports.con_update_get = asyncHandler(async (req, res, next) => {
+  // Get book, authors and genres for form.
+  const con = await Con.findById(req.params.id).populate("games").exec();
+
+  const [matching_games, matching_bookings] = await Promise.all([
+    Game.find({ con: req.params.id }).populate("bookings").exec(),
+    Booking.find({ con: req.params.id }).populate("game").populate("con").exec(),
+  ]);
+
+  con.games = matching_games;
+  con.bookings = matching_bookings;
+
+ 
+  if (con === null) {
+    // No results.
+    const err = new Error("Con not found");
+    err.status = 404;
+    return next(err);
+  }
+ 
+  res.render("con_update_form", {
+    title: "Update Con",
+    con: con,    
+  });
+
+ });
+ 
+
+ exports.con_update_post = asyncHandler(async (req, res, next) => {
   res.send("NOT IMPLEMENTED: Game create POST");
 });
 
-exports.con_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
-});
+
 
 /*
-// Display detail page for a specific book.
- 
-// Handle book create on POST.
 
 // Display book update form on GET.
 exports.book_update_get = asyncHandler(async (req, res, next) => {

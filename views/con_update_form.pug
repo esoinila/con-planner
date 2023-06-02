@@ -4,6 +4,12 @@ block content
 
   h1= page_title
 
+  p #[strong description:] #{con.description}
+  p #[strong date:] #{con.date}
+  p #[strong time:] #{con.time}
+  p #[strong earliest_start_time:] #{con.earliest_start_time}
+  p #[strong delete password:] #{con.deletepassword}
+
   form(method='POST' action='')
 
     div.form-group
