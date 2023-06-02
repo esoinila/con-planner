@@ -18,15 +18,15 @@ const countdown = (dateTextId, earliestStartTime, countdownTextId) => {
         return;
     }
 
-    //console.log("Found this for target time: " + dateTextElement.innerHTML);
-    //console.log("Found this for text output: " + countDownTextElement.innerHTML);
+    console.log("Found this for target time: " + dateTextElement.innerHTML);
+    console.log("Found this for text output: " + countDownTextElement.innerHTML);
 
     const countDownDate = new Date(Date.parse(dateTextElement.innerHTML));
     const millisecondsIntoDay = parseTimeToMilliSeconds(earliestStartTimeMilliseconds.innerHTML); // convert to hours);
-    countDownDate.setTime(date.getTime() + millisecondsIntoDay); // add 15 hours to the date
+    countDownDate.setTime(countDownDate.getTime() + millisecondsIntoDay); // add 15 hours to the date
     countDownTime = countDownDate.getTime();
 
-    //console.log("Countdown date: " + countDownDate.toString());
+    console.log("Countdown date: " + countDownDate.toString());
 
     const x = setInterval(
         function () {
@@ -50,7 +50,7 @@ const countdown = (dateTextId, earliestStartTime, countdownTextId) => {
 }
 
 // create Date that is 5 days from now
-const date = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
+//const date = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
 countdown("countdowntime", "earlieststarttime", "countdowntext");
 
 //countdown(con.date, "countdowntext");

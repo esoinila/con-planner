@@ -1,10 +1,14 @@
 extends video_layout
 
+
+
 block content
 
-  h1= page_title
+  <script src="/javascripts/fillTextArea.js" defer></script>
 
-  p #[strong description:] #{con.description}
+  h1= page_title
+  p #[strong title:] #{con.title}
+  p #[strong description:](id='answer') answer#{con.description}
   p #[strong date:] #{con.date}
   p #[strong time:] #{con.time}
   p #[strong earliest_start_time:] #{con.earliest_start_time}
@@ -19,7 +23,7 @@ block content
 
     div.form-group
       label(for='description') Description:
-      textarea#description.form-control(type='textarea', placeholder='description' name='description' required='true' value=(undefined===con ? '' : con.description) )
+      textarea#description.form-control(type='textarea', rows='2', minlength='80' placeholder='description' name='description' required='true' value=(undefined===con ? '' : con.description) )
 
     div.form-group
       label(for='date') Date:
