@@ -3,6 +3,9 @@ extends video_layout
 block content
 
   h1 Title: #{con.title}
+  
+  <script src="/javascripts/countdown.js" defer></script>
+
 
   <p id="countdowntime" hidden>#{con.date.toISOString()}</p>
   <p id="earlieststarttime" hidden>#{con.time}</p>
