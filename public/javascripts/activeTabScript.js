@@ -28,7 +28,11 @@ function setNavTab() {
         return b.length - a.length;
     });
 
-    matches[0].listItem.classList.add("active");
+    if(matches.length > 0   && matches[0].goodness > -1){
+        matches[0].listItem.classList.add("active");
+    } else {
+        listItems[0].classList.add("active");
+    }
     //console.log("Matches: " + matches.length);
     //console.log(matches);
 }
