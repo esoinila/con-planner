@@ -9,7 +9,7 @@ function fillTextArea() {
     var textArea = document.getElementById("description");
     var textAreaValue = document.getElementById("valueForTextField").innerHTML;
     let unescapedString = unescapeHTML(textAreaValue);
-    console.log("Un-escaped string for form field: " + unescapedString);
+    //console.log("Un-escaped string for form field: " + unescapedString);
     textArea.innerHTML = unescapedString;
 }   
 
