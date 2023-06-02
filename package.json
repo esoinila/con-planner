@@ -16,6 +16,7 @@
     "express-async-handler": "^1.2.0",
     "express-rate-limit": "^6.7.0",
     "express-validator": "^7.0.1",
+    "he": "^1.2.0",
     "helmet": "^7.0.0",
     "http-errors": "~1.6.3",
     "luxon": "^3.3.0",
