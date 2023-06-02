@@ -12,8 +12,8 @@ block content
   p #[strong title:] #{con.title}
   p #[strong description:] #{con.description}
   p #[strong date:] #{con.date}
+  p #[strong formatted date:] #{formattedDate}
   p #[strong time:] #{con.time}
-  p #[strong earliest_start_time:] #{con.earliest_start_time}
   p #[strong delete password:] #{con.deletepassword}
 
   form(method='POST' action='')
@@ -29,7 +29,7 @@ block content
 
     div.form-group
       label(for='date') Date:
-      input#date.form-control(type='date', placeholder='date' name='date' required='true' value=(undefined===con ? '15:00' : con.date) )
+      input#date.form-control(type='date', placeholder='date' name='date' required='true' value=(undefined===con ? '15:00' : formattedDate) )
 
 
     div.form-group

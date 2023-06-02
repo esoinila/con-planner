@@ -282,12 +282,6 @@ exports.con_delete_post = [
   })
 ]
 
-/*
-exports.con_update_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Con Update Get");
-});
-*/
-
 
 exports.con_update_get = asyncHandler(async (req, res, next) => {
   // Get book, authors and genres for form.
@@ -301,25 +295,127 @@ exports.con_update_get = asyncHandler(async (req, res, next) => {
   con.games = matching_games;
   con.bookings = matching_bookings;
 
- 
+
   if (con === null) {
     // No results.
     const err = new Error("Con not found");
     err.status = 404;
     return next(err);
   }
- 
+
+  var formattedDate = con.date.toISOString().split('T')[0];
+
   res.render("con_update_form", {
     title: "Update Con",
-    con: con,    
+    con: con,
+    formattedDate: formattedDate,
   });
 
- });
- 
-
- exports.con_update_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Game create POST");
 });
+
+exports.book_update_get = asyncHandler(async (req, res, next) => {
+  // Get book, authors and genres for form.
+  const [book, allAuthors, allGenres] = await Promise.all([
+    Book.findById(req.params.id).populate("author").populate("genre").exec(),
+    Author.find().exec(),
+    Genre.find().exec(),
+  ]);
+
+  if (book === null) {
+    // No results.
+    const err = new Error("Book not found");
+    err.status = 404;
+    return next(err);
+  }
+
+  // Mark our selected genres as checked.
+  for (const genre of allGenres) {
+    for (const book_g of book.genre) {
+      if (genre._id.toString() === book_g._id.toString()) {
+        genre.checked = "true";
+      }
+    }
+  }
+
+  res.render("book_form", {
+    title: "Update Book",
+    authors: allAuthors,
+    genres: allGenres,
+    book: book,
+  });
+});
+
+
+/*
+ exports.con_update_post = asyncHandler(async (req, res, next) => {
+  res.send("NOT IMPLEMENTED: Game update POST");
+});
+*/
+
+// Handle book update on POST.
+exports.con_update_post = [
+
+  // Validate and sanitize fields.
+  body("title", "Title must not be empty.")
+    .trim()
+    .isLength({ min: 5 })
+    .escape(),
+  body("description", "Description must not be under 30 characters.")
+    .trim()
+    .isLength({ min: 30 })
+    .escape(),
+  body("date", "Invalid date")
+    .optional({ checkFalsy: true })
+    .toDate(),
+  body("time", "Invalid time") // validate 24h format here
+    .trim()
+  //.matches(/^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/)
+  ,
+  body("deletepassword", "problem with your password")
+    .trim()
+    .escape(),
+
+  // Process request after validation and sanitization.
+  asyncHandler(async (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a Book object with escaped and trimmed data.
+    const con = new Con({
+      title: req.body.title,
+      description: req.body.description,
+      date: req.body.date,
+      time: req.body.time,
+      deletepassword: req.body.deletepassword,
+      _id: req.params.id, //This is required, or a new ID will be assigned!
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values/error messages.
+
+      const allCons = await Con.find({})
+        .sort({ title: 1 })
+        .populate("games")
+        .exec();
+
+      var formattedDate = con.date.toISOString().split('T')[0];
+
+      res.render("con_update_form", {
+        title: "Update Con",
+        con: con,
+        formattedDate: formattedDate,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      // Data from form is valid. Update the record.
+      const theCon = await Con.findByIdAndUpdate(req.params.id, con, {});
+      // Redirect to book detail page.
+      res.redirect(theCon.url);
+    }
+  }),
+];
+
 
 
 
