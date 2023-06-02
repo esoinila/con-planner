@@ -7,6 +7,8 @@ block content
   <script src="/javascripts/fillTextArea.js" defer></script>
 
   h1= page_title
+  <p hidden id="valueForTextField">#{con.description}</p>
+
   p #[strong title:] #{con.title}
   p #[strong description:](id='answer') answer#{con.description}
   p #[strong date:] #{con.date}

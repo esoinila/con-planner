@@ -1,6 +1,6 @@
 function fillTextArea() {
     var textArea = document.getElementById("description");
-    var textAreaValue = document.getElementById("answer").innerHTML;
+    var textAreaValue = document.getElementById("valueForTextField").innerHTML;
     console.log("Heppa");
 
     console.log(textAreaValue);
