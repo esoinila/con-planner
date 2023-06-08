@@ -55,3 +55,9 @@ The connection string is set in the environment variable MONGODB_URI. The demosi
 * Add Discord bot to notify game masters of signups
 * Add Discord bot to notify users of new games
 * Add install instructions to more NodeJS / MongoDB free-tier platforms
+
+## Deploying to Azure App Service
+
+I found the the best way to accomplish this was to use docker. Running docker build locally and then pushing the image to Azure Container Registry. Then using the Azure App Service deployment center to deploy the image to the App Service. 
+
+Visual Studio Code has a nice Docker and Azure App Service extensions that makes it easy to set up. After the Docker image is pushed into Azure Container Registry you can right click the image in Docker extension and select to push it to Azure App Service. After that it is mostly about whitelisting the outbound IP addresses to Mongo DB.
