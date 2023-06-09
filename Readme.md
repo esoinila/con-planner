@@ -41,6 +41,10 @@ The connection string is set in the environment variable MONGODB_URI. The demosi
 6. Whitelist the IP address of your Render.com instance.
 7. Set the environment variable MONGODB_URI to the connection string of your Atlas Mongo DB instance.
 
+## Setting up your own Render hosted NodeJS-instance with Docker
+
+Instead of pointing Render.com to your repo, you can point Render.com to your Docker image. In the advanced section add your MONGODB_URI connection string as an environment variable.
+
 ## Running the app locally
 
 1. Clone the repo.
